@@ -1,0 +1,43 @@
+.backgroundTm {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    344deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}
+.backgroundTm {
+  height: 150px; /* Imposta un'altezza minima per la navbar */
+}
+
+.dropdown-toggle::after {
+  display: none; /* Nascondi la freccia */
+}
+.profile-icon {
+  color: white;
+
+  font-size: 30px;
+}
+
+.dropdown-menu[data-bs-popper] {
+  top: calc(100% + 5px); /* Imposta la distanza dal top */
+  left: auto; /* Imposta il posizionamento orizzontale */
+  right: 0; /* Imposta il posizionamento orizzontale */
+  margin-top: 0; /* Rimuovi il margin-top */
+}
+
+#offcanvasNavbarLabel .logo-dropdown {
+  width: 100px; /* Imposta le dimensioni del logo del dropdown */
+  height: 50px;
+}
+
+/* @media only screen and (min-width: 450px) {
+  .logo-dropdown {
+    display: none;
+  }
+} */
+
+.logo-hidden {
+  display: none;
+}
