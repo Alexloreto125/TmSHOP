@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Col,
   Container,
@@ -16,6 +17,8 @@ const RegisterAndLogin = () => {
   const [visible, setVisible] = useState(false);
   const [visibleReg, setVisibleReg] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(true);
+  const [error, setError] = useState(null);
+
   const initialRegistrationState = {
     name: "",
     phone: "",
@@ -59,9 +62,39 @@ const RegisterAndLogin = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmitLogin = (e) => {
     e.preventDefault();
-    console.log("submit");
+    console.log("submit", login);
+
+    //   fetch("http://localhost:3001/auth/login");
+  };
+
+  const handleSubmitRegistration = (e) => {
+    e.preventDefault();
+    console.log("submit", registration);
+
+    fetch("http://localhost:3001/auth/register", {
+      method: "POST",
+      body: JSON.stringify(registration),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          setRegistration(initialRegistrationState);
+          return response.json;
+        } else if (response.status === 400) {
+          setError(
+            "Questa email è già in uso. Si prega di utilizzare un'altra email."
+          );
+        } else {
+          throw new Error("Qualcosa è andato storto con la fetch");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <>
@@ -101,7 +134,7 @@ const RegisterAndLogin = () => {
                     </h4>
                   </div>
                   <div className="card-3d-wrapper">
-                    <Form className="card-front" onSubmit={handleSubmit}>
+                    <Form className="card-front" onSubmit={handleSubmitLogin}>
                       <div className="center-wrap">
                         <div className="section text-center">
                           <h4 className="mb-4 pb-3">Log In</h4>
@@ -158,7 +191,10 @@ const RegisterAndLogin = () => {
                         </div>
                       </div>
                     </Form>
-                    <Form className="card-back" onSubmit={handleSubmit}>
+                    <Form
+                      className="card-back"
+                      onSubmit={handleSubmitRegistration}
+                    >
                       <div className="center-wrap">
                         <div className="section text-center">
                           <h4 className="mb-3 pb-3">Sign Up</h4>
@@ -236,6 +272,7 @@ const RegisterAndLogin = () => {
                           >
                             Register
                           </Button>
+                          {error ? <Alert variant="danger">{error}</Alert> : ""}
                         </div>
                       </div>
                     </Form>
