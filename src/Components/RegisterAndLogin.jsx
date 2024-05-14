@@ -30,6 +30,16 @@ const RegisterAndLogin = () => {
                 />
                 <label htmlFor="reg-log" />
                 <div className="card-3d-wrap mx-auto">
+                  <div className="d-flex align-items-center">
+                    <img
+                      src="public\assets\logo.png"
+                      alt="logo-TM RACING"
+                      className="logo rounded"
+                    />
+                    <h4 className="fw-bold fst-italic">
+                      TM Racing Shop By Alex
+                    </h4>
+                  </div>
                   <div className="card-3d-wrapper">
                     <div className="card-front">
                       <div className="center-wrap">
