@@ -1,9 +1,68 @@
-import { Col, Container, FormControl, FormGroup, Row } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  FormControl,
+  FormGroup,
+  Row,
+} from "react-bootstrap";
 import "../assets/RegisterAndLogin.css";
-// import "https://unicons.iconscout.com/release/v4.0.0/css/unicons.css";
-import { MdAlternateEmail } from "react-icons/md";
+import { useState } from "react";
+import { ImEyePlus } from "react-icons/im";
+import { ImEyeMinus } from "react-icons/im";
 
 const RegisterAndLogin = () => {
+  const [visible, setVisible] = useState(false);
+  const [visibleReg, setVisibleReg] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(true);
+  const initialRegistrationState = {
+    name: "",
+    phone: "",
+    email: "",
+    password: "",
+  };
+  const initialLoginState = {
+    email: "",
+    password: "",
+  };
+  const [registration, setRegistration] = useState(initialRegistrationState);
+
+  const [login, setLogin] = useState(initialLoginState);
+
+  const handleLogin = (e, key) => {
+    setLogin({
+      ...login,
+      [key]: e.target.value,
+    });
+  };
+
+  const handleRegistration = (e, key) => {
+    setRegistration({
+      ...registration,
+      [key]: e.target.value,
+    });
+  };
+  const toggleVisibility = () => {
+    setVisible(!visible);
+  };
+  const toggleVisibilityReg = () => {
+    setVisibleReg(!visibleReg);
+  };
+
+  const handleCheckboxChange = () => {
+    setShowLoginForm(!showLoginForm);
+    if (!showLoginForm) {
+      setLogin(initialLoginState);
+    } else {
+      setRegistration(initialRegistrationState);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("submit");
+  };
   return (
     <>
       <link
@@ -27,6 +86,7 @@ const RegisterAndLogin = () => {
                   type="checkbox"
                   id="reg-log"
                   name="reg-log"
+                  onChange={handleCheckboxChange}
                 />
                 <label htmlFor="reg-log" />
                 <div className="card-3d-wrap mx-auto">
@@ -41,88 +101,144 @@ const RegisterAndLogin = () => {
                     </h4>
                   </div>
                   <div className="card-3d-wrapper">
-                    <div className="card-front">
+                    <Form className="card-front" onSubmit={handleSubmit}>
                       <div className="center-wrap">
                         <div className="section text-center">
                           <h4 className="mb-4 pb-3">Log In</h4>
                           <FormGroup className="position-relative">
                             <FormControl
+                              value={login.email}
                               type="email"
                               className="form-style"
-                              placeholder="Email"
+                              placeholder="Email *"
+                              required
+                              onChange={(e) => {
+                                handleLogin(e, "email");
+                              }}
                             />
                             <i className="input-icon uil uil-at" />
                           </FormGroup>
                           <FormGroup className=" mt-2 position-relative">
                             <FormControl
-                              type="password"
+                              value={login.password}
+                              type={visible ? "text" : "password"}
                               className="form-style"
-                              placeholder="Password"
+                              placeholder="Password *"
+                              required
+                              onChange={(e) => {
+                                handleLogin(e, "password");
+                              }}
                             />
                             <i className="input-icon uil uil-lock-alt" />
+                            <div
+                              className="p-2 mt-5 position-absolute password"
+                              onClick={toggleVisibility}
+                            >
+                              {visible ? (
+                                <ImEyeMinus className="input-icon" />
+                              ) : (
+                                <ImEyePlus className="input-icon" />
+                              )}
+                            </div>
                           </FormGroup>
-                          <a
-                            // href="https://www.web-leb.com/code"
-                            className="btn mt-4"
+
+                          <Button
+                            type="submit"
+                            className="btn-dark mt-4"
+                            disabled={
+                              login.email === "" || login.password === ""
+                            }
                           >
                             Login
-                          </a>
+                          </Button>
+
                           <p className="mb-0 mt-4 text-center">
-                            <a
-                              //   href="https://www.web-leb.com/code"
-                              className="link"
-                            >
-                              Forgot your password?
-                            </a>
+                            <a className="link">Forgot your password?</a>
                           </p>
                         </div>
                       </div>
-                    </div>
-                    <div className="card-back">
+                    </Form>
+                    <Form className="card-back" onSubmit={handleSubmit}>
                       <div className="center-wrap">
                         <div className="section text-center">
                           <h4 className="mb-3 pb-3">Sign Up</h4>
                           <FormGroup className="position-relative">
                             <FormControl
+                              value={registration.name}
                               type="text"
                               className="form-style"
-                              placeholder="Full Name"
+                              placeholder="Full Name *"
+                              required
+                              onChange={(e) => {
+                                handleRegistration(e, "name");
+                              }}
                             />
                             <i className="input-icon uil uil-user" />
                           </FormGroup>
                           <FormGroup className=" mt-2  position-relative">
                             <FormControl
+                              value={registration.phone}
                               type="tel"
                               className="form-style"
-                              placeholder="Phone Number"
+                              placeholder="Phone Number *"
+                              required
+                              onChange={(e) => {
+                                handleRegistration(e, "phone");
+                              }}
                             />
                             <i className="input-icon uil uil-phone" />
                           </FormGroup>
                           <FormGroup className=" mt-2 position-relative">
                             <FormControl
+                              value={registration.email}
                               type="email"
                               className="form-style"
-                              placeholder="Email"
+                              placeholder="Email *"
+                              required
+                              onChange={(e) => {
+                                handleRegistration(e, "email");
+                              }}
                             />
                             <i className="input-icon uil uil-at" />
                           </FormGroup>
                           <FormGroup className=" mt-2 position-relative">
                             <FormControl
-                              type="password"
+                              value={registration.password}
+                              type={visibleReg ? "text" : "password"}
                               className="form-style"
-                              placeholder="Password"
+                              placeholder="Password *"
+                              required
+                              onChange={(e) => {
+                                handleRegistration(e, "password");
+                              }}
                             />
                             <i className="input-icon uil uil-lock-alt" />
+                            <div
+                              className="p-2 mt-5 position-absolute password"
+                              onClick={toggleVisibilityReg}
+                            >
+                              {visibleReg ? (
+                                <ImEyeMinus className="input-icon" />
+                              ) : (
+                                <ImEyePlus className="input-icon" />
+                              )}
+                            </div>
                           </FormGroup>
-                          <a
-                            // href="https://www.web-leb.com/code"
-                            className="btn mt-4"
+                          <Button
+                            type="submit"
+                            className="btn-dark mt-4"
+                            disabled={
+                              registration.name === "" ||
+                              registration.email === "" ||
+                              registration.phone === "" ||
+                              registration.password === ""
+                            }
                           >
                             Register
-                          </a>
+                          </Button>
                         </div>
                       </div>
-                    </div>
+                    </Form>
                   </div>
                 </div>
               </section>
