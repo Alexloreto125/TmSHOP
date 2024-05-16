@@ -9,12 +9,18 @@ import RegisterAndLogin from "./Components/RegisterAndLogin";
 function App() {
   return (
     <>
-      <RegisterAndLogin />
-      {/* <CustomNavBar />
-      <Container className="d-flex mt-3 ms-2">
-        <Categoria />
-        <GrigliaItem />
-      </Container> */}
+      {/* <RegisterAndLogin /> */}
+      <CustomNavBar />
+      <Container className="d-flex mt-3" fluid>
+        <Row>
+          <Col>
+            <Categoria />
+          </Col>
+          <Col xs={12} md={9}>
+            <GrigliaItem />
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 }
