@@ -20,6 +20,7 @@ const RegisterAndLogin = () => {
   const [visibleReg, setVisibleReg] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(true);
   const [error, setError] = useState(null);
+  const [errorLogin, setErrorLogin] = useState(null);
 
   const initialRegistrationState = {
     name: "",
@@ -64,13 +65,6 @@ const RegisterAndLogin = () => {
     }
   };
 
-  const handleSubmitLogin = (e) => {
-    e.preventDefault();
-    console.log("submit", login);
-
-    //   fetch("http://localhost:3001/auth/login");
-  };
-
   const handleSubmitRegistration = (e) => {
     e.preventDefault();
     console.log("submit", registration);
@@ -103,6 +97,40 @@ const RegisterAndLogin = () => {
       });
     setError(null);
   };
+
+  const handleSubmitLogin = (e) => {
+    e.preventDefault();
+    console.log("submit", login);
+
+    fetch("http://localhost:3001/auth/login", {
+      method: "POST",
+      body: JSON.stringify(login),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json().then((data) => {
+            setRegistration(initialLoginState);
+            return data;
+          });
+        } else if (response.status === 401 || response.status === 404) {
+          return response.json().then((data) => {
+            console.log(data);
+            setErrorLogin(data.message);
+            throw new Error(data.message);
+          });
+        } else {
+          throw new Error("Qualcosa è andato storto con la fetch");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setErrorLogin(null);
+  };
+
   return (
     <>
       <link
@@ -191,6 +219,11 @@ const RegisterAndLogin = () => {
                           >
                             Login
                           </Button>
+                          {errorLogin ? (
+                            <Alert variant="danger">{errorLogin}</Alert>
+                          ) : (
+                            ""
+                          )}
 
                           <p className="mb-0 mt-4 text-center">
                             <a className="link">Forgot your password?</a>
