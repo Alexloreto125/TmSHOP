@@ -12,6 +12,8 @@ import "../assets/RegisterAndLogin.css";
 import { useState } from "react";
 import { ImEyePlus } from "react-icons/im";
 import { ImEyeMinus } from "react-icons/im";
+import "react-phone-input-2/lib/style.css";
+import PhoneInput from "react-phone-input-2";
 
 const RegisterAndLogin = () => {
   const [visible, setVisible] = useState(false);
@@ -41,10 +43,10 @@ const RegisterAndLogin = () => {
   };
 
   const handleRegistration = (e, key) => {
-    setRegistration({
-      ...registration,
-      [key]: e.target.value,
-    });
+    setRegistration((prevRegistration) => ({
+      ...prevRegistration,
+      [key]: e,
+    }));
   };
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -82,12 +84,16 @@ const RegisterAndLogin = () => {
     })
       .then((response) => {
         if (response.ok) {
-          setRegistration(initialRegistrationState);
-          return response.json;
+          return response.json().then((data) => {
+            setRegistration(initialRegistrationState);
+            return data;
+          });
         } else if (response.status === 400) {
-          setError(
-            "Questa email è già in uso. Si prega di utilizzare un'altra email."
-          );
+          return response.json().then((data) => {
+            console.log(data);
+            setError(data.message);
+            throw new Error(data.message);
+          });
         } else {
           throw new Error("Qualcosa è andato storto con la fetch");
         }
@@ -95,6 +101,7 @@ const RegisterAndLogin = () => {
       .catch((error) => {
         console.log(error);
       });
+    setError(null);
   };
   return (
     <>
@@ -206,18 +213,23 @@ const RegisterAndLogin = () => {
                               placeholder="Full Name *"
                               required
                               onChange={(e) => {
-                                handleRegistration(e, "name");
+                                handleRegistration(e.target.value, "name");
                               }}
                             />
                             <i className="input-icon uil uil-user" />
                           </FormGroup>
-                          <FormGroup className=" mt-2  position-relative">
-                            <FormControl
+                          <FormGroup
+                            className=" mt-2  position-relative"
+                            controlId="formPhone"
+                          >
+                            <PhoneInput
+                              country={"it"}
                               value={registration.phone}
-                              type="tel"
-                              className="form-style"
-                              placeholder="Phone Number *"
-                              required
+                              inputProps={{
+                                name: "phone",
+                                required: true,
+                                className: "form-style ",
+                              }}
                               onChange={(e) => {
                                 handleRegistration(e, "phone");
                               }}
@@ -232,7 +244,7 @@ const RegisterAndLogin = () => {
                               placeholder="Email *"
                               required
                               onChange={(e) => {
-                                handleRegistration(e, "email");
+                                handleRegistration(e.target.value, "email");
                               }}
                             />
                             <i className="input-icon uil uil-at" />
@@ -245,7 +257,7 @@ const RegisterAndLogin = () => {
                               placeholder="Password *"
                               required
                               onChange={(e) => {
-                                handleRegistration(e, "password");
+                                handleRegistration(e.target.value, "password");
                               }}
                             />
                             <i className="input-icon uil uil-lock-alt" />

@@ -164,6 +164,15 @@ h6 span {
 .fade-in-enter-active {
   opacity: 1;
 }
+.react-tel-input .flag-dropdown {
+  left: 90%;
+  border: none;
+  background-color: rgba(21, 21, 21, 0.2) !important;
+  border: none !important;
+}
+.selected-flag {
+  /* margin-left: 50px; */
+}
 
 .password {
   cursor: pointer;

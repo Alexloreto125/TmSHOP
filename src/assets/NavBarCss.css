@@ -8,11 +8,11 @@
   );
 }
 .backgroundTm {
-  height: 150px; /* Imposta un'altezza minima per la navbar */
+  height: 150px;
 }
 
 .dropdown-toggle::after {
-  display: none; /* Nascondi la freccia */
+  display: none;
 }
 .profile-icon {
   color: white;
@@ -21,14 +21,12 @@
 }
 
 .dropdown-menu[data-bs-popper] {
-  top: calc(100% + 5px); /* Imposta la distanza dal top */
-  left: auto; /* Imposta il posizionamento orizzontale */
-  right: 0; /* Imposta il posizionamento orizzontale */
-  margin-top: 0; /* Rimuovi il margin-top */
+  top: calc(100% + 5px);
+  margin-top: 0;
 }
 
 #offcanvasNavbarLabel .logo-dropdown {
-  width: 100px; /* Imposta le dimensioni del logo del dropdown */
+  width: 100px;
   height: 50px;
 }
 
