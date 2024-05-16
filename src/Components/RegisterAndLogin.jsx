@@ -112,12 +112,14 @@ const RegisterAndLogin = () => {
       .then((response) => {
         if (response.ok) {
           return response.json().then((data) => {
-            setRegistration(initialLoginState);
+            setLogin(initialLoginState);
+            console.log("Access Token: ", data.accessToken);
             return data;
           });
         } else if (response.status === 401 || response.status === 404) {
           return response.json().then((data) => {
             console.log(data);
+
             setErrorLogin(data.message);
             throw new Error(data.message);
           });
