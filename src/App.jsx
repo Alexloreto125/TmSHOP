@@ -8,11 +8,11 @@ import RegisterAndLogin from "./Components/RegisterAndLogin";
 
 function App() {
   return (
-    <>
+    <body className="background-image">
       {/* <RegisterAndLogin /> */}
       <CustomNavBar />
-      <Container className="d-flex mt-3" fluid>
-        <Row>
+      <Container className="d-flex mt-3 relative-container" fluid>
+        <Row className="mt-3">
           <Col>
             <Categoria />
           </Col>
@@ -21,7 +21,7 @@ function App() {
           </Col>
         </Row>
       </Container>
-    </>
+    </body>
   );
 }
 
