@@ -1,13 +1,13 @@
 .menu-container {
   position: fixed;
   top: 80%;
-  left: 90%;
-  transform: translate(-50%, -50%);
+  left: 91%;
+  transform: translate(100%, -50%);
   transition: transform 0.3s ease;
 }
 
 .toggle-button {
-  background-color: #333;
+  background-color: red;
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -62,5 +62,5 @@
 }
 
 .menu-container.open .toggle-button {
-  background-color: #f44336;
+  background-color: #181616;
 }

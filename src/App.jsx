@@ -16,7 +16,7 @@ function App() {
   };
   return (
     <>
-      {/* <body className="background-image">
+      <body className="background-image">
         {isLoggedIn ? (
           <>
             <CustomNavBar />
@@ -30,12 +30,12 @@ function App() {
                 </Col>
               </Row>
             </Container>
+            <DeveloperMenu />
           </>
         ) : (
           <RegisterAndLogin onLogin={handleLogin} />
         )}
-      </body> */}
-      <DeveloperMenu />
+      </body>
     </>
   );
 }

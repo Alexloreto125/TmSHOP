@@ -13,7 +13,7 @@ const DeveloperMenu = () => {
   return (
     <div className={`menu-container ${isOpen ? "open" : ""}`}>
       <button className="toggle-button" onClick={toggleMenu}>
-        {isOpen ? <FaTimes /> : <FaCog />}
+        {isOpen ? <FaCog /> : <FaTimes />}
       </button>
       <ul className="menu-items">
         <li>
