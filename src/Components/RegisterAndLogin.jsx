@@ -13,9 +13,8 @@ import { useState } from "react";
 import { ImEyePlus } from "react-icons/im";
 import { ImEyeMinus } from "react-icons/im";
 import "react-phone-input-2/lib/style.css";
-import PhoneInput from "react-phone-input-2";
 
-const RegisterAndLogin = () => {
+const RegisterAndLogin = ({ onLogin }) => {
   const [visible, setVisible] = useState(false);
   const [visibleReg, setVisibleReg] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(true);
@@ -44,10 +43,10 @@ const RegisterAndLogin = () => {
   };
 
   const handleRegistration = (e, key) => {
-    setRegistration((prevRegistration) => ({
-      ...prevRegistration,
-      [key]: e,
-    }));
+    setRegistration({
+      ...registration,
+      [key]: e.target.value,
+    });
   };
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -114,6 +113,7 @@ const RegisterAndLogin = () => {
           return response.json().then((data) => {
             setLogin(initialLoginState);
             console.log("Access Token: ", data.accessToken);
+            onLogin(data.accessToken);
             return data;
           });
         } else if (response.status === 401 || response.status === 404) {
@@ -121,6 +121,7 @@ const RegisterAndLogin = () => {
             console.log(data);
 
             setErrorLogin(data.message);
+            // setTimeout(() => setErrorLogin(null), 5000);
             throw new Error(data.message);
           });
         } else {
@@ -147,11 +148,15 @@ const RegisterAndLogin = () => {
           <Row className=" full-height justify-content-center">
             <Col className="col-12 text-center align-self-center py-5">
               <section className="section pb-5 pt-5 pt-sm-2 text-center">
-                <h6 className="mb-0 pb-3">
+                <h6
+                  className="mb-0 p-2 rounded mx-auto"
+                  style={{ backgroundColor: "#2b2e38", maxWidth: "440px" }}
+                >
                   <span>Log In </span>
                   <span>Sign Up</span>
                 </h6>
                 <FormControl
+                  style={{ backgroundColor: "#2b2e38" }}
                   className="checkbox"
                   type="checkbox"
                   id="reg-log"
@@ -160,7 +165,14 @@ const RegisterAndLogin = () => {
                 />
                 <label htmlFor="reg-log" />
                 <div className="card-3d-wrap mx-auto">
-                  <div className="d-flex align-items-center">
+                  <div
+                    className="d-flex align-items-center"
+                    style={{
+                      backgroundColor: "#2b2e38",
+                      borderTopLeftRadius: "10px",
+                      borderTopRightRadius: "10px",
+                    }}
+                  >
                     <img
                       src="public\assets\logo.png"
                       alt="logo-TM RACING"
@@ -221,10 +233,13 @@ const RegisterAndLogin = () => {
                           >
                             Login
                           </Button>
-                          {errorLogin ? (
-                            <Alert variant="danger">{errorLogin}</Alert>
-                          ) : (
-                            ""
+                          {errorLogin && (
+                            <Alert
+                              variant="danger"
+                              className={errorLogin ? "fade-out-error" : ""}
+                            >
+                              {errorLogin}
+                            </Alert>
                           )}
 
                           <p className="mb-0 mt-4 text-center">
@@ -248,7 +263,7 @@ const RegisterAndLogin = () => {
                               placeholder="Full Name *"
                               required
                               onChange={(e) => {
-                                handleRegistration(e.target.value, "name");
+                                handleRegistration(e, "name");
                               }}
                             />
                             <i className="input-icon uil uil-user" />
@@ -257,14 +272,11 @@ const RegisterAndLogin = () => {
                             className=" mt-2  position-relative"
                             controlId="formPhone"
                           >
-                            <PhoneInput
-                              country={"it"}
+                            <FormControl
+                              className="form-style "
+                              type="tel"
+                              placeholder="Tel"
                               value={registration.phone}
-                              inputProps={{
-                                name: "phone",
-                                required: true,
-                                className: "form-style ",
-                              }}
                               onChange={(e) => {
                                 handleRegistration(e, "phone");
                               }}
@@ -279,7 +291,7 @@ const RegisterAndLogin = () => {
                               placeholder="Email *"
                               required
                               onChange={(e) => {
-                                handleRegistration(e.target.value, "email");
+                                handleRegistration(e, "email");
                               }}
                             />
                             <i className="input-icon uil uil-at" />
@@ -292,7 +304,7 @@ const RegisterAndLogin = () => {
                               placeholder="Password *"
                               required
                               onChange={(e) => {
-                                handleRegistration(e.target.value, "password");
+                                handleRegistration(e, "password");
                               }}
                             />
                             <i className="input-icon uil uil-lock-alt" />
@@ -319,7 +331,14 @@ const RegisterAndLogin = () => {
                           >
                             Register
                           </Button>
-                          {error ? <Alert variant="danger">{error}</Alert> : ""}
+                          {error && (
+                            <Alert
+                              variant="danger"
+                              className={error ? "fade-out-error" : ""}
+                            >
+                              {error}
+                            </Alert>
+                          )}
                         </div>
                       </div>
                     </Form>

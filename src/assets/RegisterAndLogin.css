@@ -102,7 +102,9 @@ h6 span {
   background-color: #2b2e38;
   background-image: url("/img/pattern_japanese-pattern-2_1_2_0-0_0_1__ffffff00_000000.png");
   position: absolute;
-  border-radius: 6px;
+  /* border-radius: 6px; */
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
   -webkit-transform-style: preserve-3d;
 }
 .card-back {
@@ -224,6 +226,21 @@ h6 span {
   color: #c4c3ca; /* Colore del placeholder */
 }
 
+.fade-out-error {
+  animation: fadeOut 10s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 0;
+  }
+}
 #stars {
   width: 1px;
   height: 1px;

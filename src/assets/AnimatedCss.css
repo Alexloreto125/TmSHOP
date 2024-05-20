@@ -1,0 +1,66 @@
+.menu-container {
+  position: fixed;
+  top: 80%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s ease;
+}
+
+.toggle-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+}
+
+.menu-items {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.menu-items li {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: #333;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.menu-items li:nth-child(1) {
+  transform: rotate(0deg) translateY(-105px) translateX(-40px) rotate(0deg);
+}
+
+.menu-items li:nth-child(2) {
+  transform: rotate(123deg) translateY(100px) rotate(-134deg);
+}
+
+.menu-items li:nth-child(3) {
+  transform: rotate(240deg) translateY(-60px) translateX(30px) rotate(-240deg);
+}
+
+.menu-container.open .menu-items li {
+  transform: translateY(0);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-container.open .toggle-button {
+  background-color: #f44336;
+}
