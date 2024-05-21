@@ -1,5 +1,5 @@
 import { TURN_OF_SPINNER } from "../actions";
-import { GET_PROFILE } from "../actions/userAction";
+import { GET_PROFILE, UPDATE_PROFILE } from "../actions/userAction";
 
 const initialState = {
   user: {
@@ -30,6 +30,15 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
+      };
+
+    case UPDATE_PROFILE:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          [action.payload.field]: action.payload.value,
+        },
       };
     default:
       return state;

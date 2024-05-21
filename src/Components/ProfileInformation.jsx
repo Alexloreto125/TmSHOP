@@ -1,19 +1,88 @@
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  FormControl,
+  Modal,
+  Row,
+} from "react-bootstrap";
 import "../assets/Profile.css";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { fetchMeProfile } from "../redux/actions/userAction";
+import {
+  fetchMeProfile,
+  updateProfileFetch,
+} from "../redux/actions/userAction";
 
 const ProfileInformation = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.users.user);
+
+  const [editedUser, setEditedUser] = useState({
+    name: user.name,
+    email: user.email,
+    password: user.password,
+    phone: user.phone,
+  });
+
+  const [opentModal, setOpenModal] = useState(false);
+
+  const [fieldToEdit, setFieldToEdit] = useState("");
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedUser({ ...editedUser, [name]: value });
+  };
+
+  const handleFieldSave = (field) => {
+    dispatch(updateProfileFetch(field, editedUser[field]))
+      .then(() => {
+        dispatch(fetchMeProfile());
+        handleCloseModal();
+      })
+      .catch((error) => {
+        console.log("Errore durante il salvataggio", error);
+      });
+  };
+
+  const handleOpenModal = (field) => {
+    setOpenModal(true);
+    setFieldToEdit(field);
+    switch (field) {
+      case "name":
+        setEditedUser({ ...editedUser, name: "" });
+        break;
+      case "email":
+        setEditedUser({ ...editedUser, email: "" });
+        break;
+      case "password":
+        setEditedUser({ ...editedUser, password: "" });
+        break;
+      case "phone":
+        setEditedUser({ ...editedUser, phone: "" });
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setEditedUser({
+      ...editedUser,
+      [fieldToEdit]: user[fieldToEdit],
+    });
+  };
 
   useEffect(() => {
     console.log("SONO USE DISPATCH PER IL PROFIEL", user);
 
     dispatch(fetchMeProfile());
   }, []);
+
   return (
     <>
       <Container fluid>
@@ -40,7 +109,7 @@ const ProfileInformation = () => {
                     <Col xs={12} md={6} className="text-center text-md-end">
                       <Button
                         className="Verify btn-edit"
-                        // onClick={() => handleFieldEdit("name")}
+                        onClick={() => handleOpenModal("name")}
                         onMouseEnter={(event) => {
                           event.target.style.backgroundColor = "red";
                           event.target.style.color = "white";
@@ -67,7 +136,7 @@ const ProfileInformation = () => {
                     <Col xs={12} md={6} className="text-center text-md-end">
                       <Button
                         className="Verify btn-edit"
-                        // onClick={() => handleFieldEdit("email")}
+                        onClick={() => handleOpenModal("email")}
                         onMouseEnter={(event) => {
                           event.target.style.backgroundColor = "red";
                           event.target.style.color = "white";
@@ -94,7 +163,7 @@ const ProfileInformation = () => {
                     <Col xs={12} md={6} className="text-center text-md-end">
                       <Button
                         className="Verify btn-edit"
-                        // onClick={() => handleFieldEdit("password")}
+                        onClick={() => handleOpenModal("password")}
                         onMouseEnter={(event) => {
                           event.target.style.backgroundColor = "red";
                           event.target.style.color = "white";
@@ -121,7 +190,7 @@ const ProfileInformation = () => {
                     <Col xs={12} md={6} className="text-center text-md-end">
                       <Button
                         className="Verify btn-edit"
-                        // onClick={() => handleFieldEdit("phone")}
+                        onClick={() => handleOpenModal("phone")}
                         onMouseEnter={(event) => {
                           event.target.style.backgroundColor = "red";
                           event.target.style.color = "white";
@@ -140,6 +209,32 @@ const ProfileInformation = () => {
             </Card>
           </Col>
         </Row>
+
+        <Modal show={opentModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modifica {fieldToEdit}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form.Control
+              type={fieldToEdit === "password" ? "password" : "text"}
+              name={fieldToEdit}
+              value={editedUser[fieldToEdit]}
+              onChange={handleInputChange}
+              placeholder={`Enter ${fieldToEdit}`}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Annulla
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => handleFieldSave(fieldToEdit)}
+            >
+              Modifica
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Container>
     </>
   );
