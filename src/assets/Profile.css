@@ -1,0 +1,9 @@
+.Link-Profile {
+  text-decoration: none; /* Rimuove la sottolineatura */
+  color: white; /* Imposta il colore del testo su bianco */
+}
+
+.Link-Profile:hover {
+  /* cursor: pointer; */
+  color: cornflowerblue;
+}

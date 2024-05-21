@@ -11,6 +11,11 @@
   height: 150px;
 }
 
+.Link-Navbar {
+  text-decoration: none;
+  color: white;
+}
+
 .dropdown-toggle::after {
   display: none;
 }

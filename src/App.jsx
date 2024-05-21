@@ -9,28 +9,37 @@ import { useEffect, useState } from "react";
 import DeveloperMenu from "./Components/DeveloperMenu";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import ProfilePage from "./Components/ProfilePage";
+import GrigliaCategory from "./Components/GrigliaCategory";
 
 function App() {
   const [categories, setCategories] = useState([]);
   const [updateNotification, setUpdateNotification] = useState(false);
   const isLoading = useSelector((state) => state.categories.isLoading);
+  const token = sessionStorage.getItem("token");
   return (
-    <body className="background-image">
+    <>
       <CustomNavBar />
       <Routes>
         <Route path="/" element={<RegisterAndLogin />} />
         <Route
           path="/home"
           element={
-            <Container className="d-flex mt-3" fluid>
+            <Container className="d-flex mt-3 background-image" fluid>
               <Categoria />
               {isLoading && <Spinner animation="border" variant="warning" />}
-              <GrigliaItem updateNotification={updateNotification} />
+              <GrigliaCategory updateNotification={updateNotification} />
+
+              <DeveloperMenu
+                setUpdateNotification={setUpdateNotification}
+                updateNotification={updateNotification}
+              />
             </Container>
           }
         />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
-    </body>
+    </>
   );
 }
 
@@ -44,10 +53,7 @@ export default App;
               <Categoria />
               <GrigliaItem updateNotification={updateNotification} />
             </Container>
-            <DeveloperMenu
-              setUpdateNotification={setUpdateNotification}
-              updateNotification={updateNotification}
-            />
+            
           </>
         ) : (
           <RegisterAndLogin onLogin={handleLogin} />
