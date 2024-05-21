@@ -82,9 +82,13 @@ const CustomNavBar = () => {
                 id="offcanvasNavbarDropdown"
                 className="dropdown-toggle"
               >
-                <NavDropdown.Item>
-                  <Link to={"/profile"}>Profilo</Link>
+                <NavDropdown.Item as={Link} to="/profile">
+                  Profilo
                 </NavDropdown.Item>
+                {/* <NavDropdown.Item> */}
+                {/* <NavDropdown.Item href="/profile">Profilo</NavDropdown.Item> */}
+                {/* <Link to={"/profile"}>Profilo</Link> */}
+                {/* </NavDropdown.Item> */}
                 <NavDropdown.Item href="#action4">
                   Impostazioni
                 </NavDropdown.Item>
