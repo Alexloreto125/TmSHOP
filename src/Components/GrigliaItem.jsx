@@ -7,85 +7,75 @@ import React, { useState, useEffect } from "react";
 import { method } from "lodash";
 import { Container, Dropdown } from "react-bootstrap";
 
-const GrigliaItem = () => {
+const GrigliaItem = ({ updateNotification }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:3001/api/categories", {
-          method: "GET", // Puoi cambiare il metodo in base alle tue necessità (GET, POST, ecc.)
-          headers: {
-            Authorization: `Bearer ${token}`, // Aggiungi il token negli header
-            "Content-Type": "application/json", // Aggiungi altri header se necessari
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Errore nella richiesta dei dati");
-        }
-        const data = await response.json();
-        setItems(data.content); // Imposta i dati nel tuo stato
-        setLoading(false);
-      } catch (error) {
-        console.error("Errore durante il recupero dei dati:", error);
-        setLoading(false);
+
+  const [isError, setIsError] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      const token = sessionStorage.getItem("token");
+      const response = await fetch("http://localhost:3001/api/categories", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Errore nella ricezione dati dal server");
       }
-    };
+
+      const data = await response.json();
+      setItems(data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+      setIsError(true);
+    }
+  };
+
+  useEffect(() => {
+    console.log(
+      "sono componentDidMount! ma ascolto anche i cambiamenti di updateNotification"
+    );
 
     fetchData();
-  }, []);
-
-  // const handleCategorySelect = (category) => {
-  //   setSelectedCategory(category);
-  // };
+  }, [updateNotification]);
 
   if (loading) {
     return <div>Caricamento...</div>;
   }
-  // console.log(items);
+
   return (
+    // <Container>
     <Container>
-      <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+      <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-around">
         {items.map((item, index) => (
-          <Col key={item.id} xs={12} md={6} lg={3} className="p-0 mb-4">
+          <Col key={item.id} xs={12} md={4} lg={3} className="p-0 mb-2">
             <Card
               className={`category-cover cardSize ${
                 hoveredIndex === index ? "hovered" : ""
               }`}
-              onMouseEnter={() => setHoveredIndex(index)} // Imposta l'indice quando il mouse entra nella card
-              onMouseLeave={() => setHoveredIndex(null)} // Resetta l'indice quando il mouse esce dalla card
-              onClick={() => console.log("Card cliccata:", item)} // Azione da eseguire al clic sulla card
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              onClick={() => console.log("Card cliccata:", item)}
             >
               <Card.Img variant="top" src={item.image} />
               <Card.Body>
                 <Card.Title>{item.name}</Card.Title>{" "}
-                {/* Assumi che ci sia una chiave title nel tuo oggetto item */}
               </Card.Body>
             </Card>
           </Col>
         ))}
       </Row>
-
-      {/* <Dropdown className="d-md-none">
-        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-          Seleziona Categoria
-        </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-          {items.map((item) => (
-            <Dropdown.Item
-              key={item.id}
-              onClick={() => handleCategorySelect(item)}
-            >
-              {item.name}
-            </Dropdown.Item>
-          ))}
-        </Dropdown.Menu>
-      </Dropdown> */}
     </Container>
+    // </Row>
+    // </Container>
   );
 };
 

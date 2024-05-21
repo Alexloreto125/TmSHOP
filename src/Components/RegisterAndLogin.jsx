@@ -13,13 +13,15 @@ import { useState } from "react";
 import { ImEyePlus } from "react-icons/im";
 import { ImEyeMinus } from "react-icons/im";
 import "react-phone-input-2/lib/style.css";
+import { useNavigate } from "react-router-dom";
 
-const RegisterAndLogin = ({ onLogin }) => {
+const RegisterAndLogin = () => {
   const [visible, setVisible] = useState(false);
   const [visibleReg, setVisibleReg] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(true);
   const [error, setError] = useState(null);
   const [errorLogin, setErrorLogin] = useState(null);
+  const navigate = useNavigate(); //!
 
   const initialRegistrationState = {
     name: "",
@@ -79,6 +81,8 @@ const RegisterAndLogin = ({ onLogin }) => {
         if (response.ok) {
           return response.json().then((data) => {
             setRegistration(initialRegistrationState);
+            sessionStorage.setItem("token", data.accessToken);
+            navigate("/home"); //!
             return data;
           });
         } else if (response.status === 400) {
@@ -113,7 +117,9 @@ const RegisterAndLogin = ({ onLogin }) => {
           return response.json().then((data) => {
             setLogin(initialLoginState);
             console.log("Access Token: ", data.accessToken);
-            onLogin(data.accessToken);
+            sessionStorage.setItem("token", data.accessToken);
+            navigate("/home"); //!
+
             return data;
           });
         } else if (response.status === 401 || response.status === 404) {

@@ -8,6 +8,7 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import "../assets/NavBarCss.css";
 import { CgProfile } from "react-icons/cg";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CustomNavBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -19,6 +20,8 @@ const CustomNavBar = () => {
   const handleDropdownClose = () => {
     setIsDropdownOpen(false);
   };
+
+  const navigate = useNavigate();
 
   return (
     <Navbar expand="md" data-bs-theme="info" className="backgroundTm ">
@@ -83,7 +86,15 @@ const CustomNavBar = () => {
                   Impostazioni
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action5">Esci</NavDropdown.Item>
+                <NavDropdown.Item
+                  href="#action5"
+                  onClick={() => {
+                    sessionStorage.removeItem("token");
+                    navigate("/");
+                  }}
+                >
+                  Esci
+                </NavDropdown.Item>
               </NavDropdown>
             </Nav>
           </Offcanvas.Body>

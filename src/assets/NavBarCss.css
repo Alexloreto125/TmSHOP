@@ -21,8 +21,9 @@
 }
 
 .dropdown-menu[data-bs-popper] {
-  top: calc(100% + 5px);
+  top: calc(90%);
   margin-top: 0;
+  left: -125px;
 }
 
 #offcanvasNavbarLabel .logo-dropdown {

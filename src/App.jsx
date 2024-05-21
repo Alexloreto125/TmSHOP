@@ -5,39 +5,48 @@ import GrigliaItem from "./Components/GrigliaItem";
 import Categoria from "./Components/Categoria";
 import { Container, Row, Col } from "react-bootstrap";
 import RegisterAndLogin from "./Components/RegisterAndLogin";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DeveloperMenu from "./Components/DeveloperMenu";
+import { Route, Routes, useNavigate } from "react-router-dom";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const handleLogin = (token) => {
-    localStorage.setItem("token", token);
-    setIsLoggedIn(true);
-  };
+  const [categories, setCategories] = useState([]);
+  const [updateNotification, setUpdateNotification] = useState(false);
   return (
-    <>
-      <body className="background-image">
-        {isLoggedIn ? (
-          <>
-            <CustomNavBar />
-            <Container className="d-flex mt-3 relative-container" fluid>
-              <Row className="mt-3">
-                <Col>
-                  <Categoria />
-                </Col>
-                <Col xs={12} md={9}>
-                  <GrigliaItem />
-                </Col>
-              </Row>
+    <body className="background-image">
+      <CustomNavBar />
+      <Routes>
+        <Route path="/" element={<RegisterAndLogin />} />
+        <Route
+          path="/home"
+          element={
+            <Container className="d-flex mt-3" fluid>
+              <Categoria />
+              <GrigliaItem updateNotification={updateNotification} />
             </Container>
-            <DeveloperMenu />
-          </>
-        ) : (
-          <RegisterAndLogin onLogin={handleLogin} />
-        )}
-      </body>
-    </>
+          }
+        />
+      </Routes>
+    </body>
   );
 }
 
 export default App;
+
+{
+  /* {isLoggedIn ? (
+          <>
+            <CustomNavBar />
+            <Container className="d-flex mt-3" fluid>
+              <Categoria />
+              <GrigliaItem updateNotification={updateNotification} />
+            </Container>
+            <DeveloperMenu
+              setUpdateNotification={setUpdateNotification}
+              updateNotification={updateNotification}
+            />
+          </>
+        ) : (
+          <RegisterAndLogin onLogin={handleLogin} />
+        )} */
+}
