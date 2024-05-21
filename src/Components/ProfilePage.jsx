@@ -8,6 +8,7 @@ import { CiLogout } from "react-icons/ci";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+
   return (
     <>
       <Container>

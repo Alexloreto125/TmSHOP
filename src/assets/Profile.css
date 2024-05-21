@@ -46,7 +46,7 @@
 .ProfileImg {
   border-radius: 10%;
   border: 4px soldi white;
-  width: 200px;
+  width: 150px;
 }
 
 #Card-Title {
@@ -54,7 +54,7 @@
   margin-bottom: 10px;
   position: relative;
   z-index: 4;
-  font-size: 40px;
+  font-size: 30px;
 }
 
 .NotAvailable {

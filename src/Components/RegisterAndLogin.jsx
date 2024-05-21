@@ -81,8 +81,7 @@ const RegisterAndLogin = () => {
         if (response.ok) {
           return response.json().then((data) => {
             setRegistration(initialRegistrationState);
-            sessionStorage.setItem("token", data.accessToken);
-            navigate("/home"); //!
+
             return data;
           });
         } else if (response.status === 400) {
