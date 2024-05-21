@@ -1,6 +1,9 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import categoriesReducer from "../reducers/categories";
 
-const mainReducer = combineReducers({});
+const mainReducer = combineReducers({
+  categories: categoriesReducer,
+});
 
 const store = configureStore({
   reducer: mainReducer,
