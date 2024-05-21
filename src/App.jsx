@@ -11,6 +11,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfilePage from "./Components/ProfilePage";
 import GrigliaCategory from "./Components/GrigliaCategory";
+import ProfileInformation from "./Components/ProfileInformation";
 
 function App() {
   const [categories, setCategories] = useState([]);
@@ -38,6 +39,7 @@ function App() {
           }
         />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/me" element={<ProfileInformation />} />
       </Routes>
     </>
   );

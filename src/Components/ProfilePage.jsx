@@ -27,7 +27,7 @@ const ProfilePage = () => {
             <RiAccountCircleFill className="me-3 fs-4 fw-bold" />
             <span className=" fs-4 fw-bold ">
               {" "}
-              <Link className="Link-Profile">
+              <Link className="Link-Profile" to={"/me"}>
                 {" "}
                 Informazioni sul tuo account{" "}
               </Link>

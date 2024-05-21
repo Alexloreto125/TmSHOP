@@ -7,3 +7,92 @@
   /* cursor: pointer; */
   color: cornflowerblue;
 }
+
+.Profile-Info {
+  height: 600px;
+  background-color: white;
+  color: black;
+}
+
+.Card-Info {
+  border: none;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 50px;
+  background-color: white;
+}
+
+#Image-Info {
+  width: 100%;
+  height: 150px;
+  background-image: "url(./public/assets/bike.jpg";
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#CardBody {
+  z-index: 3;
+  position: relative;
+  text-align: left;
+  margin-left: 20px;
+  top: 2.5rem;
+}
+
+.ProfileImg {
+  border-radius: 10%;
+  border: 4px soldi white;
+  width: 200px;
+}
+
+#Card-Title {
+  columns: black;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 4;
+  font-size: 40px;
+}
+
+.NotAvailable {
+  color: red;
+}
+
+.btn-edit {
+  width: 300px;
+  color: black;
+  border: none;
+  background-color: lightgray;
+  margin-left: 10px;
+  /* width: auto; */
+  transition: background-color 0.3s color 0.3s;
+}
+
+.Card-Text-Info {
+  font-size: 40px;
+  margin-bottom: 5px;
+  position: relative;
+  z-index: 4;
+}
+
+#Profile-position {
+  text-align: start;
+}
+
+@media (min-width: 576px) {
+  .Profile-Info {
+    width: 800px;
+  }
+}
+
+@media (max-width: 575px) {
+  .Profile-Info {
+    width: 400px;
+  }
+  #Profile-position {
+    text-align: center;
+  }
+}
