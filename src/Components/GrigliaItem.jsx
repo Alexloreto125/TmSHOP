@@ -6,53 +6,21 @@ import "../assets/ItemCss.css";
 import React, { useState, useEffect } from "react";
 import { method } from "lodash";
 import { Container, Dropdown } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { fetchCategories } from "../redux/actions";
+import { useSelector } from "react-redux";
 
-const GrigliaItem = ({ updateNotification }) => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+const GrigliaItem = () => {
+  const items = useSelector((state) => state.categories.available);
   const [hoveredIndex, setHoveredIndex] = useState(null);
-
-  const [isError, setIsError] = useState(false);
-
-  const fetchData = async () => {
-    try {
-      const token = sessionStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/api/categories", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Errore nella ricezione dati dal server");
-      }
-
-      const data = await response.json();
-      setItems(data);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-      setIsError(true);
-    }
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(
-      "sono componentDidMount! ma ascolto anche i cambiamenti di updateNotification"
-    );
-
-    fetchData();
-  }, [updateNotification]);
-
-  if (loading) {
-    return <div>Caricamento...</div>;
-  }
+    console.log(" SONO USE DISPATCH PER FETCHARE LE CATEGORIE");
+    dispatch(fetchCategories());
+  }, []);
 
   return (
-    // <Container>
     <Container>
       <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-around">
         {items.map((item, index) => (
@@ -74,8 +42,6 @@ const GrigliaItem = ({ updateNotification }) => {
         ))}
       </Row>
     </Container>
-    // </Row>
-    // </Container>
   );
 };
 
