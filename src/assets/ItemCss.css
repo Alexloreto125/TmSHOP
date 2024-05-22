@@ -21,3 +21,29 @@
   opacity: 1;
   max-height: 500px;
 }
+
+#Item-image-info {
+  width: 70%;
+  /* height: 100%; */
+  /* border-radius: 10px; */
+}
+
+@media (max-width: 575px) {
+  #Item-image-info {
+    width: 100%;
+    /* height: 100%; */
+    /* border-radius: 10px; */
+  }
+}
+
+.iconeCart {
+  cursor: pointer;
+}
+.bi-minecart {
+  font-size: 25px;
+  cursor: pointer;
+}
+.bi-minecart-loaded {
+  font-size: 25px;
+  cursor: pointer;
+}

@@ -14,6 +14,7 @@ import GrigliaCategory from "./Components/GrigliaCategory";
 import ProfileInformation from "./Components/ProfileInformation";
 import ItemsGriglia from "./Components/ItemsGriglia";
 import ItemInfo from "./Components/ItemInfo";
+import Cart from "./Components/Cart";
 
 function App() {
   const [categories, setCategories] = useState([]);
@@ -43,6 +44,7 @@ function App() {
         <Route path="/me" element={<ProfileInformation />} />
         <Route path="/categoria/:categoriaId" element={<ItemsGriglia />} />
         <Route path="/item/:itemId" element={<ItemInfo />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </>
   );

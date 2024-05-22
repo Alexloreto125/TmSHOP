@@ -9,9 +9,11 @@ import "../assets/NavBarCss.css";
 import { CgProfile } from "react-icons/cg";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const CustomNavBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const cart = useSelector((state) => state.cart.content);
 
   const handleDropdownOpen = () => {
     setIsDropdownOpen(true);
@@ -66,19 +68,21 @@ const CustomNavBar = () => {
               <Link to={"/home"} className="text-white fs-5 Link-Profile me-3">
                 Contact us
               </Link>
-            </Nav>
-            <Form className="d-flex align-items-center ms-3">
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-              />
-              <Button variant="outline-success">Search</Button>
-            </Form>
-            <Nav>
+              {/* </Nav> */}
+              <Form className="d-flex align-items-center ms-3">
+                <Form.Control
+                  type="search"
+                  placeholder="Search"
+                  className="ms-3"
+                  aria-label="Search"
+                />
+                <Button className="ms-3" variant="outline-success">
+                  Search
+                </Button>
+              </Form>
+              {/* <Nav> */}
               <NavDropdown
-                title={<CgProfile className="profile-icon" />}
+                title={<CgProfile className="profile-icon ms-3" />}
                 id="offcanvasNavbarDropdown"
                 className="dropdown-toggle"
               >
@@ -102,6 +106,24 @@ const CustomNavBar = () => {
                   Esci
                 </NavDropdown.Item>
               </NavDropdown>
+
+              {cart.length > 0 ? (
+                <i
+                  className="bi bi-minecart-loaded text-white"
+                  onClick={() => {
+                    console.log("carrellino pieno cliccato");
+                    navigate("/cart");
+                  }}
+                ></i>
+              ) : (
+                <i
+                  className="bi bi-minecart ms-3 text-white"
+                  onClick={() => {
+                    console.log("carrellino cliccato");
+                    navigate("/cart");
+                  }}
+                ></i>
+              )}
             </Nav>
           </Offcanvas.Body>
         </Navbar.Offcanvas>
