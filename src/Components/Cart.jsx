@@ -33,99 +33,87 @@ const Cart = () => {
 
   return (
     <Container>
-      <Row className="mt-4">
-        <Col className="p-0">
-          <Table>
-            <thead>
-              <tr>
-                <th>Immagine</th>
-                <th>Descrizione Prodotto</th>
-                <th>Prezzo</th>
-                <th>Quantità</th>
-              </tr>
-            </thead>
-
-            {uniqueItemCart.map((item, i) => (
-              <tbody key={i}>
-                <tr className="text-dark">
-                  <td>
-                    <img
-                      className="item-cover-small"
-                      src={item.image}
-                      alt="item selected"
-                      style={{ width: "60px" }}
-                    />
-                  </td>
-                  <td>{item.name}</td>
-                  <td>{item.prezzo}</td>
-                  <td className="d-flex ">
-                    <i
-                      className="bi bi-plus-circle iconeCart"
-                      onClick={() => {
-                        // vorrei aggiungere un item al carrello
-                        console.log("AGGIUNGO ITEM");
-
-                        dispatch(addToCartAction(item));
-                      }}
-                    ></i>
-
-                    <div
-                      className="border text-center ms-3 me-3"
-                      style={{ width: "40px" }}
-                    >
-                      {cart.length}
-                    </div>
-                    <i
-                      className="bi bi-dash-circle iconeCart"
-                      onClick={() => {
-                        // vorrei aggiungere un item al carrello
-                        console.log("RIMUOVO ITEM");
-
-                        dispatch(removeFromCartAction(cart.length - 1));
-                      }}
-                    ></i>
-                  </td>
+      <h1 className="mt-1 text-center">CARRELLO</h1>
+      {cart.length > 0 ? (
+        <Row className="mt-4">
+          <Col className="p-0">
+            <Table>
+              <thead>
+                <tr>
+                  <th>Immagine</th>
+                  <th>Descrizione Prodotto</th>
+                  <th>Prezzo</th>
+                  <th>Quantità</th>
                 </tr>
-              </tbody>
-            ))}
-          </Table>
-          {/* <ul style={{ listStyle: "none" }}>
-          {uniqueItemCart.map((item, i) => (
-            <li key={i} className="my-4">
-              <img
-                className="item-cover-small"
-                src={item.image}
-                alt="item selected"
-                style={{ width: "60px" }}
-              />
-              <Button
-                variant="danger"
-                onClick={() => {
-                  console.log("ELIMINO IL LIBRO");
-                  dispatch(removeFromCartAction(i));
-                  console.log(item);
-                }}
-              >
-                <FaTrash />
-              </Button>
+              </thead>
 
-              {item.name}
-              
-            </li>
-          ))}
-        </ul> */}
-        </Col>
-        <Row>
-          <Col sm={12} className="fw-bold mb-3 ms-4">
-            TOTALE:{" "}
-            {cart.reduce(
-              (acc, currentValue) => acc + parseFloat(currentValue.prezzo),
-              0
-            )}
-            €
+              {uniqueItemCart.map((item, i) => (
+                <tbody key={i}>
+                  <tr className="text-dark">
+                    <td>
+                      <img
+                        className="item-cover-small"
+                        src={item.image}
+                        alt="item selected"
+                        style={{ width: "60px" }}
+                      />
+                    </td>
+                    <td>{item.name}</td>
+                    <td>{item.prezzo}</td>
+                    <td>
+                      <Col className="d-flex align-items-center">
+                        <i
+                          className="bi bi-plus-circle iconeCart"
+                          onClick={() => {
+                            // vorrei aggiungere un item al carrello
+                            console.log("AGGIUNGO ITEM");
+
+                            dispatch(addToCartAction(item));
+                          }}
+                        ></i>
+
+                        <div
+                          className="border text-center ms-3 me-3"
+                          style={{ width: "40px" }}
+                        >
+                          {contatoreCart(cart, item)}
+                        </div>
+                        <i
+                          className="bi bi-dash-circle iconeCart"
+                          onClick={() => {
+                            // vorrei aggiungere un item al carrello
+                            console.log("RIMUOVO ITEM");
+
+                            dispatch(
+                              removeFromCartAction(
+                                cart.findIndex(
+                                  (cartItem) => cartItem.id === item.id
+                                )
+                              )
+                            );
+                          }}
+                        ></i>
+                      </Col>
+                    </td>
+                  </tr>
+                </tbody>
+              ))}
+            </Table>
           </Col>
+          <Row>
+            <Col sm={12} className="fw-bold mb-3 ms-4">
+              TOTALE:{" "}
+              {cart.reduce(
+                (acc, currentValue) => acc + parseFloat(currentValue.prezzo),
+                0
+              )}
+              €
+            </Col>
+          </Row>
         </Row>
-      </Row>
+      ) : (
+        <h2>Nessun elemento nel carrello...</h2>
+      )}
     </Container>
   );
 };

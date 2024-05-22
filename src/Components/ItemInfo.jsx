@@ -20,7 +20,13 @@ const ItemInfo = () => {
   const dispatch = useDispatch();
   console.log(item);
   const cart = useSelector((state) => state.cart.content);
-
+  const contatoreCart = (cartItem, targetItem) => {
+    return cartItem.reduce(
+      (count, currentItem) =>
+        currentItem.id === targetItem.id ? count + 1 : count,
+      0
+    );
+  };
   if (!item) {
     return (
       <Container>
@@ -69,7 +75,7 @@ const ItemInfo = () => {
               className="border text-center ms-3 me-3"
               style={{ width: "40px" }}
             >
-              {cart.length}
+              {contatoreCart(cart, item)}
             </div>
             <i
               className="bi bi-dash-circle iconeCart"
@@ -77,7 +83,11 @@ const ItemInfo = () => {
                 // vorrei aggiungere un item al carrello
                 console.log("RIMUOVO ITEM");
 
-                dispatch(removeFromCartAction(cart.length - 1));
+                dispatch(
+                  removeFromCartAction(
+                    cart.findIndex((cartItem) => cartItem.id === item.id)
+                  )
+                );
               }}
             ></i>
           </Col>
