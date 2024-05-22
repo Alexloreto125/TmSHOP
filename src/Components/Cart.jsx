@@ -2,6 +2,7 @@ import { Col, Row, Button, Table, Container } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCartAction, removeFromCartAction } from "../redux/actions";
+import ReturnButton from "./ReturnButton";
 
 const Cart = () => {
   // qui dentro uso useSelector per recuperare di nuovo l'array di itmem
@@ -32,10 +33,11 @@ const Cart = () => {
   }, []);
 
   return (
-    <Container>
+    <Container fluid>
+      <ReturnButton />
       <h1 className="mt-1 text-center">CARRELLO</h1>
       {cart.length > 0 ? (
-        <Row className="mt-4">
+        <Row className="mt-4 mx-auto">
           <Col className="p-0">
             <Table>
               <thead>

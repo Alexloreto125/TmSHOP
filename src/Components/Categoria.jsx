@@ -13,21 +13,6 @@ const Categoria = () => {
     <Row className="mt-3">
       <Col>
         <h2 className="text-center">Categoria</h2>
-        {/* <ListGroup defaultActiveKey="/category">
-          {categories.map((categoria) => (
-            <ListGroup.Item
-              action
-              onClick={() => {
-                navigate(`/categoria/${categoria.id}`);
-              }}
-              key={categoria.id}
-            >
-              {console.log("categoria cliccata")}
-
-              {categoria.name}
-            </ListGroup.Item>
-          ))}
-        </ListGroup> */}
       </Col>
     </Row>
   );

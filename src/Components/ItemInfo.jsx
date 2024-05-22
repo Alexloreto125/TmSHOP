@@ -11,6 +11,7 @@ import {
   addToCartAction,
   removeFromCartAction,
 } from "./../redux/actions/index";
+import ReturnButton from "./ReturnButton";
 
 const ItemInfo = () => {
   const { itemId } = useParams();
@@ -36,6 +37,7 @@ const ItemInfo = () => {
   }
   return (
     <Container className="mb-5" fluid>
+      <ReturnButton />
       <Row className="mt-5" style={{ textAlign: "-moz-center" }}>
         <Col md={6} className="border-end border-light border-4">
           <Col className="border-light border border-4" id="Item-image-info">
@@ -72,8 +74,8 @@ const ItemInfo = () => {
             ></i>
 
             <div
-              className="border text-center ms-3 me-3"
-              style={{ width: "40px" }}
+              className="border text-center ms-3 me-3 divCart"
+              // style={{ width: "40px" }}
             >
               {contatoreCart(cart, item)}
             </div>

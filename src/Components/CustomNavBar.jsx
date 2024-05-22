@@ -109,7 +109,7 @@ const CustomNavBar = () => {
 
               {cart.length > 0 ? (
                 <i
-                  className="bi bi-minecart-loaded text-white"
+                  className="bi bi-minecart-loaded ms-3 text-white"
                   onClick={() => {
                     console.log("carrellino pieno cliccato");
                     navigate("/cart");

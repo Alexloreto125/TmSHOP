@@ -5,6 +5,7 @@ import { RxBorderSplit } from "react-icons/rx";
 import "../assets/Profile.css";
 
 import { CiLogout } from "react-icons/ci";
+import ReturnButton from "./ReturnButton";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const ProfilePage = () => {
   return (
     <>
       <Container>
+        <ReturnButton />
         <Row className="d-flex flex-column">
           <h1 className="border-bottom mb-5">
             <span className="text-dark fs-4 fw-bold mx-auto mb-2">Profilo</span>

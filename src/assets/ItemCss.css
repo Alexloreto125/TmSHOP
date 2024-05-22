@@ -34,8 +34,17 @@
     /* height: 100%; */
     /* border-radius: 10px; */
   }
+  .divCart {
+    width: 60px;
+  }
+  .iconeCart {
+    font-size: 40px;
+  }
 }
 
+.divCart {
+  width: 150px;
+}
 .iconeCart {
   cursor: pointer;
 }

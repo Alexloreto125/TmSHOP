@@ -1,0 +1,17 @@
+.back-button-container {
+  /* position: fixed; */
+  top: 0; /* 10px di margine più l'altezza della navbar */
+  left: 10px;
+  z-index: 1000; /* Assicurati che il pulsante sia sopra altri elementi */
+}
+
+.back-button {
+  cursor: pointer;
+  font-size: 24px; /* Dimensione dell'icona */
+  color: #000; /* Colore dell'icona */
+  transition: color 0.3s ease;
+}
+
+.back-button:hover {
+  color: #555; /* Colore dell'icona al passaggio del mouse */
+}

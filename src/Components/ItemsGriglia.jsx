@@ -13,6 +13,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { fetchItemByCategory } from "../redux/actions";
+import ReturnButton from "./ReturnButton";
 
 const ItemsGriglia = () => {
   const { categoriaId } = useParams();
@@ -31,7 +32,8 @@ const ItemsGriglia = () => {
     return <Spinner animation="border" variant="warning" />;
   }
   return (
-    <Container className="ms-3">
+    <Container fluid>
+      <ReturnButton />
       <Row
         xs={1}
         sm={2}

@@ -1,7 +1,7 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CustomNavBar from "./Components/CustomNavBar";
-import GrigliaItem from "./Components/GrigliaItem";
+// import GrigliaItem from "./Components/GrigliaItem";
 import Categoria from "./Components/Categoria";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
 import RegisterAndLogin from "./Components/RegisterAndLogin";
