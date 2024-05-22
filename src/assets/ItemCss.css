@@ -8,3 +8,16 @@
   transform: scale(1.1); /* Ingrandisci la card al passaggio del mouse */
   transition: transform 0.3s ease; /* Animazione di transizione */
 }
+
+.dropdown-menu {
+  display: block !important;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 5s ease, opacity 0.3s ease;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  max-height: 500px;
+}

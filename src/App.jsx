@@ -12,7 +12,8 @@ import { useSelector } from "react-redux";
 import ProfilePage from "./Components/ProfilePage";
 import GrigliaCategory from "./Components/GrigliaCategory";
 import ProfileInformation from "./Components/ProfileInformation";
-import Items from "./Components/Items";
+import ItemsGriglia from "./Components/ItemsGriglia";
+import ItemInfo from "./Components/ItemInfo";
 
 function App() {
   const [categories, setCategories] = useState([]);
@@ -22,6 +23,10 @@ function App() {
   return (
     <>
       <CustomNavBar />
+      <DeveloperMenu
+        setUpdateNotification={setUpdateNotification}
+        updateNotification={updateNotification}
+      />
       <Routes>
         <Route path="/" element={<RegisterAndLogin />} />
         <Route
@@ -31,17 +36,13 @@ function App() {
               <Categoria />
               {isLoading && <Spinner animation="border" variant="warning" />}
               <GrigliaCategory updateNotification={updateNotification} />
-
-              <DeveloperMenu
-                setUpdateNotification={setUpdateNotification}
-                updateNotification={updateNotification}
-              />
             </Container>
           }
         />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/me" element={<ProfileInformation />} />
-        <Route path="/categoria/:categoriaId" element={<Items />} />
+        <Route path="/categoria/:categoriaId" element={<ItemsGriglia />} />
+        <Route path="/item/:itemId" element={<ItemInfo />} />
       </Routes>
     </>
   );
