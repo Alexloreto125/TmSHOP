@@ -33,10 +33,13 @@ function App() {
         <Route
           path="/home"
           element={
-            <Container className="d-flex background-image" fluid>
+            <Container className="background-image" fluid>
               <Categoria />
-              {isLoading && <Spinner animation="border" variant="warning" />}
-              <GrigliaCategory updateNotification={updateNotification} />
+              <Row>
+                {isLoading && <Spinner animation="border" variant="warning" />}
+
+                <GrigliaCategory updateNotification={updateNotification} />
+              </Row>
             </Container>
           }
         />

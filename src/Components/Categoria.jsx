@@ -10,11 +10,13 @@ const Categoria = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
-    <Row className="mt-3">
-      <Col>
-        <h2 className="text-center">Categoria</h2>
-      </Col>
-    </Row>
+    // <Row className="mt-3">
+    <Col>
+      <h2 className="text-center text-dark bg-body-secondary mt-2 p-2 border rounded">
+        Categoria
+      </h2>
+    </Col>
+    // </Row>
   );
 };
 export default Categoria;

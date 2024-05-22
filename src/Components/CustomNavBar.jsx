@@ -10,7 +10,7 @@ import { CgProfile } from "react-icons/cg";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useMediaQuery } from "react-bootstrap";
+import { useMediaQuery } from "react-responsive";
 
 const CustomNavBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -25,7 +25,7 @@ const CustomNavBar = () => {
   };
 
   const navigate = useNavigate();
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   return (
     <Navbar expand="md" data-bs-theme="info" className="backgroundTm ">

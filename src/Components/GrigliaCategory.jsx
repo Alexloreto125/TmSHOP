@@ -23,37 +23,39 @@ const GrigliaCategory = () => {
   }, []);
 
   return (
-    <Container className="ms-3">
-      <Row
-        xs={1}
-        sm={2}
-        md={3}
-        lg={4}
-        className="g-4 justify-content-around mt-3"
-      >
-        {category.map((categoria, index) => (
-          <Col key={categoria.id} xs={12} md={4} lg={3} className="p-0 mb-2">
-            <Card
-              className={`category-cover cardSize ${
-                hoveredIndex === index ? "hovered" : ""
-              }`}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              onClick={() => {
-                console.log("Card cliccata:", categoria.id);
+    // <Container className="ms-3">
+    //   <Row
+    //     xs={1}
+    //     sm={2}
+    //     md={3}
+    //     lg={4}
+    //     className="g-4 justify-content-around mt-3"
+    //   >
+    <>
+      {category.map((categoria, index) => (
+        <Col key={categoria.id} xs={6} md={4} lg={3} className=" mb-2">
+          <Card
+            className={`category-cover cardSize ${
+              hoveredIndex === index ? "hovered" : ""
+            }`}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onClick={() => {
+              console.log("Card cliccata:", categoria.id);
 
-                navigate(`/categoria/${categoria.id}`);
-              }}
-            >
-              <Card.Img variant="top" src={categoria.image} />
-              <Card.Body>
-                <Card.Title>{categoria.name}</Card.Title>{" "}
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+              navigate(`/categoria/${categoria.id}`);
+            }}
+          >
+            <Card.Img variant="top" src={categoria.image} />
+            <Card.Body>
+              <Card.Title>{categoria.name}</Card.Title>{" "}
+            </Card.Body>
+          </Card>
+        </Col>
+      ))}
+    </>
+    //   </Row>
+    // </Container>
   );
 };
 

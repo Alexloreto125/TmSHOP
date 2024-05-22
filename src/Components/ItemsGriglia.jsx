@@ -63,7 +63,7 @@ const ItemsGriglia = () => {
           </Dropdown>
         </Col>
         {items.map((item) => (
-          <Col key={item.id} xs={12} md={4} lg={3} className="p-0 mb-2">
+          <Col key={item.id} xs={6} md={4} lg={3} className="p-0 mb-2">
             <Card
               className="item-cover cardSize"
               onClick={() => {
