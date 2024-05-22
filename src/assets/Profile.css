@@ -1,6 +1,10 @@
+.Link-Navbar-OffCanvas {
+  text-decoration: none;
+  color: white;
+}
 .Link-Profile {
-  text-decoration: none; /* Rimuove la sottolineatura */
-  color: white; /* Imposta il colore del testo su bianco */
+  text-decoration: none;
+  color: white;
 }
 
 .Link-Profile:hover {
@@ -16,7 +20,7 @@
 
 .Card-Info {
   border: none;
-  width: 100%;
+  max-width: 100vh;
   position: relative;
   overflow: hidden;
   padding-bottom: 50px;
@@ -26,7 +30,7 @@
 #Image-Info {
   width: 100%;
   height: 150px;
-  background-image: "url(./public/assets/bike.jpg";
+  /* background-image: "url(./public/assets/bike.jpg"; */
   background-repeat: no-repeat;
   background-size: cover;
   z-index: 2;
@@ -94,5 +98,11 @@
   }
   #Profile-position {
     text-align: center;
+  }
+}
+@media (max-width: 768px) {
+  .Link-Navbar-OffCanvas {
+    text-decoration: none;
+    color: black;
   }
 }

@@ -15,8 +15,11 @@ const ProfilePage = () => {
       <Container>
         <ReturnButton />
         <Row className="d-flex flex-column">
-          <h1 className="border-bottom mb-5">
-            <span className="text-dark fs-4 fw-bold mx-auto mb-2">Profilo</span>
+          <h1 className="border-bottom mb-5 text-center">
+            <span className="text-white fs-4 fw-bold mx-auto mb-2 ">
+              Profilo
+            </span>
+            <img src="./public/assets/default.png" style={{ width: "60px" }} />
           </h1>
           <Col className="border-bottom mb-5 d-flex align-items-center">
             <RxBorderSplit className="me-3 fs-4 fw-bold" />

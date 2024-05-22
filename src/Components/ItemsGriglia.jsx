@@ -63,19 +63,15 @@ const ItemsGriglia = () => {
           </Dropdown>
         </Col>
         {items.map((item) => (
-          <Col
-            key={item.id}
-            xs={12}
-            md={4}
-            lg={3}
-            className="p-0 mb-2"
-            onClick={() => {
-              console.log("Item cliccato:", item);
+          <Col key={item.id} xs={12} md={4} lg={3} className="p-0 mb-2">
+            <Card
+              className="item-cover cardSize"
+              onClick={() => {
+                console.log("Item cliccato:", item);
 
-              navigate(`/item/${item.id}`);
-            }}
-          >
-            <Card className="item-cover cardSize">
+                navigate(`/item/${item.id}`);
+              }}
+            >
               <Card.Img variant="top" src={item.image} />
               <Card.Body>
                 <Card.Title>{item.name}</Card.Title>

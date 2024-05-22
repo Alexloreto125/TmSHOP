@@ -10,6 +10,7 @@ import { CgProfile } from "react-icons/cg";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useMediaQuery } from "react-bootstrap";
 
 const CustomNavBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -24,6 +25,7 @@ const CustomNavBar = () => {
   };
 
   const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   return (
     <Navbar expand="md" data-bs-theme="info" className="backgroundTm ">
@@ -42,7 +44,7 @@ const CustomNavBar = () => {
             <span>TM Racing SHOP</span>
           </Link>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="offcanvasNavbar" />
+        <Navbar.Toggle aria-controls="offcanvasNavbar" md={"false"} />
         <Navbar.Offcanvas
           id="offcanvasNavbar"
           aria-labelledby="offcanvasNavbarLabel"
@@ -62,10 +64,21 @@ const CustomNavBar = () => {
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-2 d-flex align-items-center">
-              <Link to={"/home"} className="text-white fs-5 Link-Profile me-3">
+              {isMobile ? (
+                <Link
+                  to={"/profile"}
+                  className="fs-5 mb-5 Link-Navbar-OffCanvas me-3"
+                >
+                  Profile{" "}
+                </Link>
+              ) : (
+                ""
+              )}
+
+              <Link to={"/home"} className=" fs-5 Link-Navbar-OffCanvas me-3">
                 Home
               </Link>
-              <Link to={"/home"} className="text-white fs-5 Link-Profile me-3">
+              <Link to={"/home"} className=" fs-5 Link-Navbar-OffCanvas me-3">
                 Contact us
               </Link>
               {/* </Nav> */}
@@ -89,10 +102,6 @@ const CustomNavBar = () => {
                 <NavDropdown.Item as={Link} to="/profile">
                   Profilo
                 </NavDropdown.Item>
-                {/* <NavDropdown.Item> */}
-                {/* <NavDropdown.Item href="/profile">Profilo</NavDropdown.Item> */}
-                {/* <Link to={"/profile"}>Profilo</Link> */}
-                {/* </NavDropdown.Item> */}
                 <NavDropdown.Item href="#action4">
                   Impostazioni
                 </NavDropdown.Item>
