@@ -27,7 +27,7 @@ function App() {
         <Route
           path="/home"
           element={
-            <Container className="d-flex mt-3 background-image" fluid>
+            <Container className="d-flex background-image" fluid>
               <Categoria />
               {isLoading && <Spinner animation="border" variant="warning" />}
               <GrigliaCategory updateNotification={updateNotification} />

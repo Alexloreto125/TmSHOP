@@ -8,7 +8,7 @@ const Categoria = () => {
   const categories = useSelector((state) => state.categories.available);
   const dispatch = useDispatch();
   return (
-    <Row>
+    <Row className="mt-3">
       <Col>
         <h2 className="text-center">Categoria</h2>
         <ListGroup defaultActiveKey="/category">

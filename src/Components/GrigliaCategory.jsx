@@ -23,7 +23,13 @@ const GrigliaCategory = () => {
 
   return (
     <Container className="ms-3">
-      <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-around">
+      <Row
+        xs={1}
+        sm={2}
+        md={3}
+        lg={4}
+        className="g-4 justify-content-around mt-3"
+      >
         {category.map((categoria, index) => (
           <Col key={categoria.id} xs={12} md={4} lg={3} className="p-0 mb-2">
             <Card
