@@ -17,7 +17,7 @@ const GrigliaItem = () => {
 
   useEffect(() => {
     console.log(" SONO USE DISPATCH PER FETCHARE LE CATEGORIE");
-    dispatch(fetchCategories());
+    // dispatch(fetchCategories());
   }, []);
 
   return (
@@ -31,7 +31,9 @@ const GrigliaItem = () => {
               }`}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
-              onClick={() => console.log("Card cliccata:", item)}
+              onClick={() => {
+                console.log("Card cliccata:", item);
+              }}
             >
               <Card.Img variant="top" src={item.image} />
               <Card.Body>

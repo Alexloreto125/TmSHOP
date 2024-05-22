@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import ProfilePage from "./Components/ProfilePage";
 import GrigliaCategory from "./Components/GrigliaCategory";
 import ProfileInformation from "./Components/ProfileInformation";
+import Items from "./Components/Items";
 
 function App() {
   const [categories, setCategories] = useState([]);
@@ -40,6 +41,7 @@ function App() {
         />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/me" element={<ProfileInformation />} />
+        <Route path="/categoria/:categoriaId" element={<Items />} />
       </Routes>
     </>
   );

@@ -4,16 +4,17 @@ import Card from "react-bootstrap/Card";
 import "../assets/ItemCss.css";
 // import Container from "react-bootstrap/Container";
 import React, { useState, useEffect } from "react";
-import { method } from "lodash";
-import { Container, Dropdown } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { fetchCategories } from "../redux/actions";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const GrigliaCategory = () => {
-  const items = useSelector((state) => state.categories.available);
+  const category = useSelector((state) => state.categories.available);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log(" SONO USE DISPATCH PER FETCHARE LE CATEGORIE");
@@ -23,19 +24,23 @@ const GrigliaCategory = () => {
   return (
     <Container className="ms-3">
       <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-around">
-        {items.map((item, index) => (
-          <Col key={item.id} xs={12} md={4} lg={3} className="p-0 mb-2">
+        {category.map((categoria, index) => (
+          <Col key={categoria.id} xs={12} md={4} lg={3} className="p-0 mb-2">
             <Card
               className={`category-cover cardSize ${
                 hoveredIndex === index ? "hovered" : ""
               }`}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
-              onClick={() => console.log("Card cliccata:", item)}
+              onClick={() => {
+                console.log("Card cliccata:", categoria.id);
+
+                navigate(`/categoria/${categoria.id}`);
+              }}
             >
-              <Card.Img variant="top" src={item.image} />
+              <Card.Img variant="top" src={categoria.image} />
               <Card.Body>
-                <Card.Title>{item.name}</Card.Title>{" "}
+                <Card.Title>{categoria.name}</Card.Title>{" "}
               </Card.Body>
             </Card>
           </Col>
