@@ -6,6 +6,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: radial-gradient(ellipse at bottom, #9ecbff 0%, #12141d 100%);
+  /* background-size: cover;
+  background-repeat: no-repeat; */
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
@@ -13,7 +16,7 @@ code {
 }
 
 #root {
-  background: radial-gradient(ellipse at bottom, #9ecbff 0%, #12141d 100%);
-  background-size: cover;
-  background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }

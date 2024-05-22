@@ -12,7 +12,33 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
   const dispatch = useDispatch();
 
   const [formType, setFormType] = useState("create");
+  const initialCategory = {
+    name: "",
+    description: "",
+  };
+  const [category, setCategory] = useState(initialCategory);
   const [categoryIdToDelete, setCategoryIdToDelete] = useState("");
+
+  const handleChange = (e, key) => {
+    setCategory({
+      ...category,
+      [key]: e.target.value,
+    });
+  };
+  const handleDeleteChange = (e) => {
+    setCategoryIdToDelete(e.target.value);
+  };
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+  const openForm = () => {
+    setShowForm(true);
+  };
+
+  const closeForm = () => {
+    setShowForm(false);
+  };
 
   const handleDeleteSubmit = async (e) => {
     e.preventDefault();
@@ -39,34 +65,6 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
     } catch (err) {
       console.error("Error:", err.message);
     }
-  };
-
-  const initialCategory = {
-    name: "",
-    description: "",
-  };
-
-  const [category, setCategory] = useState(initialCategory);
-  const handleChange = (e, key) => {
-    setCategory({
-      ...category,
-      [key]: e.target.value,
-    });
-  };
-
-  const handleDeleteChange = (e) => {
-    setCategoryIdToDelete(e.target.value);
-  };
-
-  const openForm = () => {
-    setShowForm(true);
-  };
-
-  const closeForm = () => {
-    setShowForm(false);
-  };
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
   };
 
   const handleFormSubmit = async (e) => {
@@ -104,9 +102,9 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
   return (
     <div className={`menu-container ${isOpen ? "open" : ""}`}>
       <button className="toggle-button" onClick={toggleMenu}>
-        {isOpen ? <FaCog /> : <FaTimes />}
+        {isOpen ? <FaTimes /> : <FaCog />}
       </button>
-      <ul className="menu-items">
+      <ul className={`menu-items ${isOpen ? "open" : ""}`}>
         <li onClick={openForm}>
           <FaHome />
         </li>
