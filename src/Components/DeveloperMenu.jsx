@@ -39,6 +39,18 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
   const [categoryIdToDelete, setCategoryIdToDelete] = useState("");
   const [error, setError] = useState({});
 
+  ///? ITEM TO UPDATE
+  const [itemToUpdate, setItemToUpdate] = useState({
+    name: "",
+    prezzo: "",
+    categoryID: null,
+    codice: "",
+    descrizione: "",
+    image: "",
+  });
+  const [itemIdToEdit, setItemIdToEdit] = useState("");
+
+  ///? CATEGORY TO UPDATE
   const [categoryToUpdate, setCategoryToUpdate] = useState({
     name: "",
     description: "",
@@ -78,6 +90,18 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
       description: selectedCategory.description,
     });
     setCategoryIdToEdit(selectedCategory.id);
+  };
+  const handleEditItem = (selectedItem) => {
+    // Popola lo stato con i dati della categoria selezionata
+    setItemToUpdate({
+      name: selectedItem.name,
+      prezzo: selectedItem.prezzo,
+      categoryID: selectedItem.categoryID,
+      codice: selectedItem.codice,
+      descrizione: selectedItem.description,
+      image: "",
+    });
+    setItemIdToEdit(selectedItem.id);
   };
 
   const toggleMenu = () => {
@@ -260,6 +284,32 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
       setError(err);
     }
   };
+  ///FETCH EDIT ITEM PUT
+  const handleEditItemSubmit = async (e) => {
+    e.preventDefault();
+    const token = sessionStorage.getItem("token");
+    const url = `http://localhost:3001/item/${itemIdToEdit}`;
+    try {
+      const response = await fetch(url, {
+        method: "PUT",
+        body: JSON.stringify(itemToUpdate),
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        console.log("Categoria modificata");
+        closeForm();
+        dispatch(fetchCategories());
+      } else {
+        console.log(response.statusText);
+      }
+    } catch (err) {
+      console.error("Error:", err.message);
+      setError(err);
+    }
+  };
 
   return (
     <div className={`menu-container ${isOpen ? "open" : ""}`}>
@@ -376,55 +426,80 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                 </Form>
               </Tab.Pane>
               <Tab.Pane eventKey="editItem">
-                <Form name="editItem">
+                <Form name="editItem" onSubmit={handleEditItemSubmit}>
                   <Form.Label>ID Item:</Form.Label>
                   <FormControl
                     type="text"
                     placeholder="Inserisci ID Item"
-                    // onChange={(e) => handleChangeCategory(e, "name")}
+                    onChange={(e) => setItemIdToEdit(e.target.value)}
                     className="mb-2"
-                    // value={category.name}
+                    value={itemIdToEdit}
                   />
                   <Form.Label>Nome:</Form.Label>
                   <FormControl
                     type="text"
                     placeholder="Modifica Nome Item"
-                    // onChange={(e) => handleChangeCategory(e, "name")}
+                    value={itemToUpdate.name}
+                    onChange={(e) =>
+                      setItemToUpdate({
+                        ...itemToUpdate,
+                        name: e.target.value,
+                      })
+                    }
                     className="mb-2"
-                    // value={category.name}
                   />
                   <Form.Label>Descrizione:</Form.Label>
                   <FormControl
                     type="text"
                     placeholder="Modifica Descrizione Item"
-                    // onChange={(e) => handleChangeCategory(e, "name")}
+                    value={itemToUpdate.descrizione}
+                    onChange={(e) =>
+                      setItemToUpdate({
+                        ...itemToUpdate,
+                        descrizione: e.target.value,
+                      })
+                    }
                     className="mb-2"
-                    // value={category.name}
                   />
                   <Form.Label>Prezzo :</Form.Label>
                   <FormControl
                     type="text"
                     placeholder="Inserisci Prezzo Item"
-                    // onChange={(e) => handleChangeCategory(e, "name")}
+                    value={itemToUpdate.prezzo}
+                    onChange={(e) =>
+                      setItemToUpdate({
+                        ...itemToUpdate,
+                        prezzo: e.target.value,
+                      })
+                    }
                     className="mb-2"
-                    // value={category.name}
                   />
                   <Form.Label>Codice :</Form.Label>
                   <FormControl
                     type="text"
                     placeholder="Modifica Codice Item"
-                    // onChange={(e) => handleChangeCategory(e, "name")}
+                    value={itemToUpdate.codice}
+                    onChange={(e) =>
+                      setItemToUpdate({
+                        ...itemToUpdate,
+                        codice: e.target.value,
+                      })
+                    }
                     className="mb-2"
-                    // value={category.name}
                   />
 
                   <Form.Label>Categoria id Item :</Form.Label>
                   <FormControl
                     type="text"
                     placeholder="Modifica Categoria id Item"
-                    // onChange={(e) => handleChangeCategory(e, "name")}
+                    value={itemToUpdate.categoryID}
+                    onChange={(e) =>
+                      setItemToUpdate({
+                        ...itemToUpdate,
+                        categoryID: e.target.value,
+                      })
+                    }
                     className="mb-2"
-                    // value={category.name}
                   />
                   <Button variant="primary" type="submit">
                     Invia
