@@ -4,6 +4,7 @@ export const SAVE_ITEMS = "SAVE_ITEMS";
 export const RESET_CART = "RESET_CART";
 export const AGGIUNGI_CARRELLO = "AGGIUNGI_CARRELLO";
 export const DELETE_FROM_CART = "DELETE_FROM_CART";
+export const CREATE_ITEM = "CREATE_ITEM";
 
 ///FETCHING CATEGORIES
 
@@ -61,7 +62,7 @@ export const fetchItemByCategory = (categoryId) => {
       );
       if (response.ok) {
         let fetchItem = await response.json();
-        /// ORA AGGIUNGIAMO I LIBRI AL REDUCERS
+        /// ORA AGGIUNGIAMO ITEMS AL REDUCERS
         dispatch({
           type: SAVE_ITEMS,
           payload: fetchItem,
@@ -117,3 +118,34 @@ export const resetCartAction = () => {
     type: RESET_CART,
   };
 };
+
+// export const handleItemFormSubmit = (item) => {
+//   return async (dispatch, getState) => {
+//     try {
+//       const token = sessionStorage.getItem("token");
+//       let response = await fetch("http://localhost:3001/item/add", {
+//         method: "POST",
+//         body: JSON.stringify(item),
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           "Content-Type": "application/json",
+//         },
+//       });
+
+//       if (response.ok) {
+//         let data = response.json().dispatch({
+//           type: CREATE_ITEM,
+//           payload: data,
+//         });
+//       } else {
+//         let errorData = await response.json();
+//         let errorMessage = errorData.message || "Errore sconosciuto";
+//         alert(errorMessage); // Mostra l'alert con il messaggio di errore
+//         console.log("Errore:", errorMessage);
+//         console.log("ERrore andato storto");
+//       }
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// };

@@ -1,7 +1,15 @@
-import { SAVE_ITEMS } from "../actions";
+import { CREATE_ITEM, SAVE_ITEMS } from "../actions";
 
 const initialState = {
   available: [],
+  item: {
+    name: "",
+    prezzo: "",
+    categoryID: null,
+    codice: "",
+    descrizione: "",
+    image: "",
+  },
 };
 
 const itemsReducer = (state = initialState, action) => {
@@ -11,7 +19,11 @@ const itemsReducer = (state = initialState, action) => {
         ...state,
         available: action.payload,
       };
-
+    case CREATE_ITEM:
+      return {
+        ...state,
+        item: action.payload,
+      };
     default:
       return state;
   }
