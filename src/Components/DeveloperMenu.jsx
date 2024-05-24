@@ -12,7 +12,8 @@ import "../assets/AnimatedCss.css";
 import { FaHome, FaUser, FaCog, FaTimes } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { fetchCategories } from "../redux/actions";
+import { fetchCategories, fetchItemByCategory } from "../redux/actions";
+import { useParams } from "react-router-dom";
 // import { handleItemFormSubmit } from "./../redux/actions/index";
 
 const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
@@ -34,10 +35,13 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
   };
 
   const [item, setItem] = useState(initialItem);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [itemIdToDelete, setItemIdToDelete] = useState("");
   const [category, setCategory] = useState(initialCategory);
   const [categoryIdToDelete, setCategoryIdToDelete] = useState("");
   const [error, setError] = useState({});
+  const defaultImageUrl =
+    "http://res.cloudinary.com/alexstrive/image/upload/v1716543242/pepwgnzlzjracbk5uttn.png";
 
   ///? ITEM TO UPDATE
   const [itemToUpdate, setItemToUpdate] = useState({
@@ -63,6 +67,10 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
       ...item,
       [key]: e.target.value,
     });
+  };
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
   };
 
   const handleChangeCategory = (e, key) => {
@@ -203,6 +211,8 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
 
     return result;
   }
+
+  // const { categoriaId } = useParams();
   ///ITEM FETCH POST
   const handleFormSubmitItem = async (e) => {
     e.preventDefault();
@@ -210,16 +220,17 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
     if (formType === "createItem") {
       const token = sessionStorage.getItem("token");
       if (!token) {
-        setError("Token non presente. Effettua il login.");
+        setError({ general: "Token non presente. Effettua il login." });
         return;
       }
       if (!item.codice) {
         item.codice = generateRandomCode(7);
       }
+
       try {
         const response = await fetch("http://localhost:3001/item/add", {
           method: "POST",
-          body: JSON.stringify(item),
+          body: JSON.stringify({ ...item, image: defaultImageUrl }),
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -228,13 +239,44 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
 
         if (response.ok) {
           const data = await response.json();
-          setItem(initialItem);
-          console.log("Categoria creata", data);
-          setUpdateNotification(!updateNotification);
-          // Assumi che closeForm sia una funzione definita nel tuo componente
-          closeForm();
-          dispatch(fetchCategories());
-          setError({});
+          console.log(data.itemRicambio.id);
+
+          if (selectedFile) {
+            const formData = new FormData();
+            formData.append("image", selectedFile);
+
+            const imageResponse = await fetch(
+              `http://localhost:3001/item/uploadItem/${data.itemRicambio.id}`,
+              {
+                method: "PUT",
+                body: formData,
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            if (imageResponse.ok) {
+              setItem(initialItem);
+              setSelectedFile(null);
+              console.log("Item creato con immagine", data);
+              setUpdateNotification((prev) => !prev);
+              closeForm(); // Assumi che closeForm sia una funzione definita nel tuo componente
+              dispatch(fetchCategories());
+              setError({});
+            } else {
+              const imageData = await imageResponse.json();
+              setError({ general: imageData.message });
+              throw new Error(imageData.message);
+            }
+          } else {
+            setItem(initialItem);
+            console.log("Item creato senza immagine", data);
+            setUpdateNotification((prev) => !prev);
+            closeForm(); // Assumi che closeForm sia una funzione definita nel tuo componente
+            dispatch(fetchCategories());
+            setError({});
+          }
         } else {
           const data = await response.json();
           const newErrors = {};
@@ -248,8 +290,6 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
           }
 
           setError(newErrors);
-          // Se desideri resettare l'errore dopo un po' di tempo
-          // setTimeout(() => setError({}), 10000);
           throw new Error(data.message);
         }
       } catch (err) {
@@ -299,7 +339,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
         },
       });
       if (response.ok) {
-        console.log("Categoria modificata");
+        console.log("ITEM modificata");
         closeForm();
         dispatch(fetchCategories());
       } else {
@@ -563,17 +603,16 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                   )}
                   <Form.Label>Immagine:</Form.Label>
                   <FormControl
-                    type="text"
-                    placeholder="Inserisci URL immagine"
-                    onChange={(e) => handleChangeItem(e, "image")}
+                    type="file"
+                    placeholder="Inserisci Immagine"
+                    onChange={handleFileChange}
                     className="mb-2"
-                    value={item.image}
                   />
                   <Button variant="primary" type="submit">
                     Invia
                   </Button>
                   {error.general && (
-                    <Alert variant="danger">{error.general}</Alert>
+                    <Alert variant="danger">{error.image}</Alert>
                   )}
                   {/* {console.log(item)} */}
                 </Form>

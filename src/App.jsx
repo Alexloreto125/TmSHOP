@@ -45,7 +45,10 @@ function App() {
         />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/me" element={<ProfileInformation />} />
-        <Route path="/categoria/:categoriaId" element={<ItemsGriglia />} />
+        <Route
+          path="/categoria/:categoriaId"
+          element={<ItemsGriglia updateNotification={updateNotification} />}
+        />
         <Route path="/item/:itemId" element={<ItemInfo />} />
         <Route path="/cart" element={<Cart />} />
       </Routes>
