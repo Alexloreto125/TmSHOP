@@ -144,6 +144,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
         // setUpdateNotification(!updateNotification);
         closeForm();
         dispatch(fetchCategories());
+        setUpdateNotification(!updateNotification);
       } else {
         console.log(response.statusText);
       }
@@ -159,34 +160,69 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
     const formType = e.target.name;
     if (formType === "createCategory") {
       const token = sessionStorage.getItem("token");
+      if (!token) {
+        setError({ general: "Token non presente. Effettua il login." });
+        return;
+      }
 
-      fetch("http://localhost:3001/api/categories/create", {
-        method: "POST",
-        body: JSON.stringify(category),
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json().then((data) => {
+      try {
+        const response = await fetch(
+          "http://localhost:3001/api/categories/create",
+          {
+            method: "POST",
+            body: JSON.stringify(category),
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data.category.id);
+
+          if (selectedFile) {
+            const formData = new FormData();
+            formData.append("image", selectedFile);
+
+            const imageResponse = await fetch(
+              `http://localhost:3001/api/categories/upload/${data.category.id}`,
+              {
+                method: "PUT",
+                body: formData,
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            if (imageResponse.ok) {
               setCategory(initialCategory);
-              console.log("Categoria creata ", data);
-              setUpdateNotification(!updateNotification);
+              console.log("Categoria creata", data);
               closeForm();
               dispatch(fetchCategories());
               return data;
-            });
-          } else if (response.status === 500) {
-            console.log(response.message);
-          } else throw new Error();
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
+            } else {
+              const data = await response.json();
+              const newErrors = {};
+              if (data.errors) {
+                data.errors.forEach((error) => {
+                  newErrors[error.field] = error.message;
+                });
+              } else {
+                newErrors.general = data.message;
+              }
+              setError(newErrors);
+              throw new Error(data.message);
+            }
+          }
+        }
+      } catch (err) {
+        console.log(err.message);
+      }
     }
   };
+
   //   } else if (formType === "createItem") {
   //     try {
   //       dispatch(handleItemFormSubmit(item));
@@ -316,6 +352,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
         console.log("Categoria modificata");
         closeForm();
         dispatch(fetchCategories());
+        setUpdateNotification(!updateNotification);
       } else {
         console.log(response.statusText);
       }
@@ -342,6 +379,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
         console.log("ITEM modificata");
         closeForm();
         dispatch(fetchCategories());
+        setUpdateNotification(!updateNotification);
       } else {
         console.log(response.statusText);
       }
@@ -418,6 +456,13 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                     placeholder="Inserisci descrizione"
                     onChange={(e) => handleChangeCategory(e, "description")}
                     value={category.description}
+                  />
+                  <Form.Label>Immagine:</Form.Label>
+                  <FormControl
+                    type="file"
+                    placeholder="Inserisci Immagine"
+                    onChange={handleFileChange}
+                    className="mb-2"
                   />
                   <Button variant="primary" type="submit">
                     Invia
