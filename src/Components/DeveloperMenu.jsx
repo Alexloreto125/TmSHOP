@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Alert,
   Button,
+  Col,
   Form,
   FormControl,
   Modal,
@@ -40,7 +41,8 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
   const [itemIdToDelete, setItemIdToDelete] = useState("");
   const [category, setCategory] = useState(initialCategory);
   const [categoryIdToDelete, setCategoryIdToDelete] = useState("");
-  const [error, setError] = useState({});
+  const [error, setError] = useState(null);
+  const [errorItem, setErrorItem] = useState(null);
   const defaultImageUrl =
     "http://res.cloudinary.com/alexstrive/image/upload/v1716543242/pepwgnzlzjracbk5uttn.png";
 
@@ -165,7 +167,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
     if (formType === "createCategory") {
       const token = sessionStorage.getItem("token");
       if (!token) {
-        setError({ general: "Token non presente. Effettua il login." });
+        setError("Token non presente. Effettua il login.");
         return;
       }
 
@@ -181,8 +183,10 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
             },
           }
         );
+
         if (response.ok) {
           const data = await response.json();
+
           console.log(data.category.id);
 
           if (selectedFile) {
@@ -205,38 +209,25 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
               console.log("Categoria creata", data);
               closeForm();
               dispatch(fetchCategories());
-              return data;
+              setError(null);
             } else {
-              const data = await response.json();
-              const newErrors = {};
-              if (data.errors) {
-                data.errors.forEach((error) => {
-                  newErrors[error.field] = error.message;
-                });
-              } else {
-                newErrors.general = data.message;
-              }
-              setError(newErrors);
-              throw new Error(data.message);
+              const errorData = await imageResponse.json();
+              console.log(errorData.message);
+              setError(errorData.message);
+              throw new Error(errorData.message);
             }
           }
+        } else {
+          const errorData = await response.json();
+          console.log(errorData.message);
+          setError(errorData.message);
         }
       } catch (err) {
         console.log(err.message);
+        setError("Si è verificato un errore. Si prega di riprovare.");
       }
     }
   };
-
-  //   } else if (formType === "createItem") {
-  //     try {
-  //       dispatch(handleItemFormSubmit(item));
-  //       setItem(initialItem);
-  //       closeForm();
-  //     } catch (err) {
-  //       setError(err.message);
-  //     }
-  //   }
-  // };
 
   function generateRandomCode(length) {
     const characters =
@@ -298,39 +289,22 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
 
             if (imageResponse.ok) {
               setItem(initialItem);
-              setSelectedFile(null);
               console.log("Item creato con immagine", data);
               setUpdateNotification((prev) => !prev);
-              closeForm(); // Assumi che closeForm sia una funzione definita nel tuo componente
+              closeForm();
               dispatch(fetchCategories());
-              setError({});
+              setErrorItem(null);
             } else {
-              const imageData = await imageResponse.json();
-              setError({ general: imageData.message });
-              throw new Error(imageData.message);
+              const errorData = await imageResponse.json();
+              console.log(errorData.message);
+              setErrorItem(errorData.message);
+              throw new Error(errorData.message);
             }
-          } else {
-            setItem(initialItem);
-            console.log("Item creato senza immagine", data);
-            setUpdateNotification((prev) => !prev);
-            closeForm(); // Assumi che closeForm sia una funzione definita nel tuo componente
-            dispatch(fetchCategories());
-            setError({});
           }
         } else {
-          const data = await response.json();
-          const newErrors = {};
-
-          if (data.errors) {
-            data.errors.forEach((error) => {
-              newErrors[error.field] = error.message;
-            });
-          } else {
-            newErrors.general = data.message;
-          }
-
-          setError(newErrors);
-          throw new Error(data.message);
+          const errorData = await response.json();
+          console.log(errorData.message);
+          setErrorItem(errorData.message);
         }
       } catch (err) {
         console.log(err.message);
@@ -493,9 +467,12 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                     onChange={handleFileChange}
                     className="mb-2"
                   />
-                  <Button variant="primary" type="submit">
-                    Invia
-                  </Button>
+                  <Col className="d-flex ">
+                    <Button variant="primary" type="submit" className="me-2">
+                      Invia
+                    </Button>
+                    {error ? <Alert variant="danger"> {error} </Alert> : ""}
+                  </Col>
                 </Form>
               </Tab.Pane>
               <Tab.Pane eventKey="editCategory">
@@ -644,7 +621,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                     className="mb-2"
                     value={item.name}
                   />
-                  {error.name && <Alert variant="danger">{error.name}</Alert>}
+
                   <Form.Label>Prezzo:</Form.Label>
                   <FormControl
                     type="text"
@@ -653,9 +630,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                     className="mb-2"
                     value={item.prezzo}
                   />
-                  {error.prezzo && (
-                    <Alert variant="danger">{error.prezzo}</Alert>
-                  )}
+
                   <Form.Label>Category ID:</Form.Label>
                   <FormControl
                     type="text"
@@ -664,9 +639,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                     className="mb-2"
                     value={item.category_id}
                   />
-                  {error.category_id && (
-                    <Alert variant="danger">{error.category_id}</Alert>
-                  )}
+
                   <Form.Label>Codice:</Form.Label>
                   <FormControl
                     type="text"
@@ -675,9 +648,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                     className="mb-2"
                     value={item.codice}
                   />
-                  {error.codice && (
-                    <Alert variant="danger">{error.codice}</Alert>
-                  )}
+
                   <Form.Label>Descrizione:</Form.Label>
                   <FormControl
                     type="text"
@@ -686,9 +657,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                     className="mb-2"
                     value={item.descrizione}
                   />
-                  {error.descrizione && (
-                    <Alert variant="danger">{error.descrizione}</Alert>
-                  )}
+
                   <Form.Label>Immagine:</Form.Label>
                   <FormControl
                     type="file"
@@ -699,8 +668,10 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                   <Button variant="primary" type="submit">
                     Invia
                   </Button>
-                  {error.general && (
-                    <Alert variant="danger">{error.image}</Alert>
+                  {errorItem ? (
+                    <Alert variant="danger">{errorItem} </Alert>
+                  ) : (
+                    ""
                   )}
                   {/* {console.log(item)} */}
                 </Form>
