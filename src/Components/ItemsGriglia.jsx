@@ -14,19 +14,24 @@ import {
 } from "react-bootstrap";
 import { fetchItemByCategory } from "../redux/actions";
 import ReturnButton from "./ReturnButton";
+import DeveloperMenu from "./DeveloperMenu";
 
-const ItemsGriglia = () => {
-  const { categoriaId } = useParams();
+const ItemsGriglia = ({ updateNotification }) => {
   const isLoading = useSelector((state) => state.categories.isLoading);
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories.available);
   const navigate = useNavigate();
+  const { categoriaId } = useParams();
+  const items = useSelector((state) => state.items.available);
 
   useEffect(() => {
     dispatch(fetchItemByCategory(categoriaId));
   }, [dispatch, categoriaId]);
 
-  const items = useSelector((state) => state.items.available);
+  useEffect(() => {
+    dispatch(fetchItemByCategory(categoriaId));
+  }, [dispatch, updateNotification]);
+
   // console.log(items);
   if (isLoading) {
     return <Spinner animation="border" variant="warning" />;
