@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Alert,
   Button,
@@ -21,7 +21,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const dispatch = useDispatch();
-
+  const fileInputRef = useRef(null);
   const initialCategory = {
     name: "",
     description: "",
@@ -41,7 +41,12 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
   const [itemIdToDelete, setItemIdToDelete] = useState("");
   const [category, setCategory] = useState(initialCategory);
   const [categoryIdToDelete, setCategoryIdToDelete] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState({
+    category: null,
+    item: null,
+    editCategory: null,
+    editItem: null,
+  });
   const [errorItem, setErrorItem] = useState(null);
   const defaultImageUrl =
     "http://res.cloudinary.com/alexstrive/image/upload/v1716543242/pepwgnzlzjracbk5uttn.png";
@@ -73,6 +78,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
   };
 
   const handleFileChange = (e) => {
+    setSelectedFile(null);
     setSelectedFile(e.target.files[0]);
   };
   const handleFileEdit = (e) => {
@@ -170,7 +176,6 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
         setError("Token non presente. Effettua il login.");
         return;
       }
-
       try {
         const response = await fetch(
           "http://localhost:3001/api/categories/create",
@@ -186,10 +191,10 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
 
         if (response.ok) {
           const data = await response.json();
-
+          setError({ category: null });
           console.log(data.category.id);
 
-          if (selectedFile) {
+          if (selectedFile !== null) {
             const formData = new FormData();
             formData.append("image", selectedFile);
 
@@ -209,18 +214,28 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
               console.log("Categoria creata", data);
               closeForm();
               dispatch(fetchCategories());
-              setError(null);
+              setError({ category: null });
             } else {
               const errorData = await imageResponse.json();
               console.log(errorData.message);
-              setError(errorData.message);
-              throw new Error(errorData.message);
+              setError({ category: errorData.message });
+              return;
             }
+          } else {
+            setCategory(initialCategory);
+            setSelectedFile(null);
+            if (fileInputRef.current) {
+              fileInputRef.current.value = ""; // Reset file input
+            }
+            console.log("Categoria creata", data);
+            closeForm();
+            dispatch(fetchCategories());
+            setError({ category: null });
           }
         } else {
           const errorData = await response.json();
           console.log(errorData.message);
-          setError(errorData.message);
+          setError({ category: errorData.message });
         }
       } catch (err) {
         console.log(err.message);
@@ -271,13 +286,16 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
         if (response.ok) {
           const data = await response.json();
           console.log(data.itemRicambio.id);
-
+          setError({ item: null });
+          console.log(" PRIMA DELL'IF ", selectedFile);
           if (selectedFile) {
+            console.log(" DOPO L'IF ", selectedFile);
             const formData = new FormData();
             formData.append("image", selectedFile);
+            console.log(" FORMDATA ", formData);
 
             const imageResponse = await fetch(
-              `http://localhost:3001/item/uploadItem/${data.itemRicambio.id}`,
+              `http://localhost:3001/item/upload/${data.itemRicambio.id}`,
               {
                 method: "PUT",
                 body: formData,
@@ -290,21 +308,25 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
             if (imageResponse.ok) {
               setItem(initialItem);
               console.log("Item creato con immagine", data);
+
+              console.log(" ALLA FINE", selectedFile);
               setUpdateNotification((prev) => !prev);
               closeForm();
               dispatch(fetchCategories());
-              setErrorItem(null);
+              setError({ item: null });
             } else {
+              closeForm();
               const errorData = await imageResponse.json();
               console.log(errorData.message);
-              setErrorItem(errorData.message);
-              throw new Error(errorData.message);
+              setError({ item: errorData.message });
             }
           }
         } else {
           const errorData = await response.json();
           console.log(errorData.message);
-          setErrorItem(errorData.message);
+
+          setUpdateNotification(!updateNotification);
+          setError({ item: errorData.message });
         }
       } catch (err) {
         console.log(err.message);
@@ -330,7 +352,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
       if (response.ok) {
         const data = await response.json();
         console.log(data.category.id);
-
+        setError({ editCategory: null });
         if (selectedFileEdit) {
           const formData = new FormData();
           formData.append("image", selectedFileEdit);
@@ -349,14 +371,24 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
             closeForm();
             dispatch(fetchCategories());
             setUpdateNotification(!updateNotification);
+            setError({ editCategory: null });
           } else {
             const imageData = await imageResponse.json();
-            setError({ general: imageData.message });
-            throw new Error(imageData.message);
+            setError({ editCategory: imageData.message });
+            return;
           }
+        } else {
+          setCategory(initialCategory);
+          setSelectedFileEdit(null);
+
+          console.log("Categoria modificata", data);
+          closeForm();
+          dispatch(fetchCategories());
+          setError({ editCategory: null });
         }
       } else {
-        console.log(response.statusText);
+        const data = await response.json();
+        setError({ editCategory: data.message });
       }
     } catch (err) {
       console.error("Error:", err.message);
@@ -379,16 +411,49 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
         },
       });
       if (response.ok) {
-        console.log("ITEM modificata");
-        closeForm();
-        dispatch(fetchCategories());
-        setUpdateNotification(!updateNotification);
+        const data = await response.json();
+        console.log(data.id);
+        setError({ editItem: null });
+        if (selectedFileEdit) {
+          const formData = new FormData();
+          formData.append("image", selectedFileEdit);
+          const imageResponse = await fetch(
+            `http://localhost:3001/item/upload/${data.id}`,
+            {
+              method: "PUT",
+              body: formData,
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (imageResponse.ok) {
+            console.log("Item modificato");
+            closeForm();
+            dispatch(fetchCategories());
+            setUpdateNotification(!updateNotification);
+            setError({ editItem: null });
+          } else {
+            const imageData = await imageResponse.json();
+            setError({ editItem: imageData.message });
+            return;
+          }
+        } else {
+          setItem(initialItem);
+          setSelectedFileEdit(null);
+
+          console.log("Item modificato", data);
+          closeForm();
+          dispatch(fetchCategories());
+          setError({ editItem: null });
+        }
       } else {
-        console.log(response.statusText);
+        const data = await response.json();
+        setError({ editItem: data.message });
       }
     } catch (err) {
       console.error("Error:", err.message);
-      setError(err);
     }
   };
 
@@ -471,7 +536,11 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                     <Button variant="primary" type="submit" className="me-2">
                       Invia
                     </Button>
-                    {error ? <Alert variant="danger"> {error} </Alert> : ""}
+                    {error.category ? (
+                      <Alert variant="danger"> {error.category} </Alert>
+                    ) : (
+                      ""
+                    )}
                   </Col>
                 </Form>
               </Tab.Pane>
@@ -483,6 +552,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                     placeholder="Inserisci ID Categoria"
                     value={categoryIdToEdit}
                     className="mb-2"
+                    required
                     onChange={(e) => setCategoryIdToEdit(e.target.value)}
                   />
                   <Form.Label>Nome:</Form.Label>
@@ -516,11 +586,19 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                     type="file"
                     placeholder="Inserisci Immagine"
                     onChange={handleFileEdit}
+                    // ref={fileInputRef}
                     className="mb-2"
                   />
-                  <Button variant="danger" type="submit">
-                    MODIFICA
-                  </Button>
+                  <Col className="d-flex ">
+                    <Button variant="primary" type="submit" className="me-2">
+                      MODIFICA
+                    </Button>
+                    {error.editCategory ? (
+                      <Alert variant="danger"> {error.editCategory} </Alert>
+                    ) : (
+                      ""
+                    )}
+                  </Col>
                 </Form>
               </Tab.Pane>
               <Tab.Pane eventKey="editItem">
@@ -603,12 +681,19 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                   <FormControl
                     type="file"
                     placeholder="Inserisci Immagine"
-                    onChange={handleFileChange}
+                    onChange={handleFileEdit}
                     className="mb-2"
                   />
-                  <Button variant="primary" type="submit">
-                    Invia
-                  </Button>
+                  <Col className="d-flex ">
+                    <Button variant="primary" type="submit" className="me-2">
+                      MODIFICA
+                    </Button>
+                    {error.editItem ? (
+                      <Alert variant="danger"> {error.editItem} </Alert>
+                    ) : (
+                      ""
+                    )}
+                  </Col>
                 </Form>
               </Tab.Pane>
               <Tab.Pane eventKey="createItem">
@@ -665,15 +750,16 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                     onChange={handleFileChange}
                     className="mb-2"
                   />
-                  <Button variant="primary" type="submit">
-                    Invia
-                  </Button>
-                  {errorItem ? (
-                    <Alert variant="danger">{errorItem} </Alert>
-                  ) : (
-                    ""
-                  )}
-                  {/* {console.log(item)} */}
+                  <Col className="d-flex ">
+                    <Button variant="primary" type="submit" className="me-2">
+                      MODIFICA
+                    </Button>
+                    {error.item ? (
+                      <Alert variant="danger"> {error.item} </Alert>
+                    ) : (
+                      ""
+                    )}
+                  </Col>
                 </Form>
               </Tab.Pane>
               <Tab.Pane eventKey="delete">
