@@ -36,6 +36,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
 
   const [item, setItem] = useState(initialItem);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFileEdit, setSelectedFileEdit] = useState(null);
   const [itemIdToDelete, setItemIdToDelete] = useState("");
   const [category, setCategory] = useState(initialCategory);
   const [categoryIdToDelete, setCategoryIdToDelete] = useState("");
@@ -71,6 +72,9 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
+  };
+  const handleFileEdit = (e) => {
+    setSelectedFileEdit(e.target.files[0]);
   };
 
   const handleChangeCategory = (e, key) => {
@@ -348,11 +352,35 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
           "Content-Type": "application/json",
         },
       });
+
       if (response.ok) {
-        console.log("Categoria modificata");
-        closeForm();
-        dispatch(fetchCategories());
-        setUpdateNotification(!updateNotification);
+        const data = await response.json();
+        console.log(data.category.id);
+
+        if (selectedFileEdit) {
+          const formData = new FormData();
+          formData.append("image", selectedFileEdit);
+          const imageResponse = await fetch(
+            `http://localhost:3001/api/categories/upload/${data.category.id}`,
+            {
+              method: "PUT",
+              body: formData,
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (imageResponse.ok) {
+            console.log("Categoria modificata");
+            closeForm();
+            dispatch(fetchCategories());
+            setUpdateNotification(!updateNotification);
+          } else {
+            const imageData = await imageResponse.json();
+            setError({ general: imageData.message });
+            throw new Error(imageData.message);
+          }
+        }
       } else {
         console.log(response.statusText);
       }
@@ -361,6 +389,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
       setError(err);
     }
   };
+
   ///FETCH EDIT ITEM PUT
   const handleEditItemSubmit = async (e) => {
     e.preventDefault();
@@ -505,6 +534,13 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                       })
                     }
                   />
+                  <Form.Label>Immagine:</Form.Label>
+                  <FormControl
+                    type="file"
+                    placeholder="Inserisci Immagine"
+                    onChange={handleFileEdit}
+                    className="mb-2"
+                  />
                   <Button variant="danger" type="submit">
                     MODIFICA
                   </Button>
@@ -584,6 +620,13 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                         categoryID: e.target.value,
                       })
                     }
+                    className="mb-2"
+                  />
+                  <Form.Label>Immagine:</Form.Label>
+                  <FormControl
+                    type="file"
+                    placeholder="Inserisci Immagine"
+                    onChange={handleFileChange}
                     className="mb-2"
                   />
                   <Button variant="primary" type="submit">
