@@ -14,8 +14,8 @@ const ProfilePage = () => {
   return (
     <>
       <CustomNavBar />
+      <ReturnButton />
       <Container style={{ minHeight: "100vh" }}>
-        <ReturnButton />
         <Row className="d-flex flex-column">
           <h1 className="border-bottom mb-5 text-center">
             <span className="text-white fs-4 fw-bold mx-auto mb-2 ">
@@ -27,7 +27,9 @@ const ProfilePage = () => {
             <RxBorderSplit className="me-3 fs-4 fw-bold" />
             <span className=" fs-4 fw-bold ">
               {" "}
-              <Link className="Link-Profile">I tuoi ordini </Link>
+              <Link to="/storico" className="Link-Profile">
+                I tuoi ordini{" "}
+              </Link>
             </span>
           </Col>
           <Col className="border-bottom mb-5 d-flex align-items-center">

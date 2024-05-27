@@ -6,7 +6,7 @@ const ReturnButton = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="back-button-container">
+    <div className="back-button-container ms-3">
       <FaArrowLeft className="back-button" onClick={() => navigate(-1)} />
     </div>
   );

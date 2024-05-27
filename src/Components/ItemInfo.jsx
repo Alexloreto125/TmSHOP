@@ -40,12 +40,12 @@ const ItemInfo = ({ updateNotification, setUpdateNotification }) => {
   return (
     <>
       <CustomNavBar />
+      <ReturnButton />
       <Container className="mb-5" fluid style={{ minHeight: "100vh" }}>
         <DeveloperMenu
           setUpdateNotification={setUpdateNotification}
           updateNotification={updateNotification}
         />
-        <ReturnButton />
         <Row className="mt-5" style={{ textAlign: "-moz-center" }}>
           <Col md={6} className="border-end border-light border-4">
             <Col className="border-light border border-4" id="Item-image-info">

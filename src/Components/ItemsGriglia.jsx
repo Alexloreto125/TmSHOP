@@ -40,12 +40,12 @@ const ItemsGriglia = ({ updateNotification, setUpdateNotification }) => {
   return (
     <>
       <CustomNavBar />
+      <ReturnButton />
       <Container fluid style={{ minHeight: "100vh" }}>
         <DeveloperMenu
           setUpdateNotification={setUpdateNotification}
           updateNotification={updateNotification}
         />
-        <ReturnButton />
         <Row className="g-4 justify-content-around mt-3">
           <Col xs={12} md={3} className="d-flex flex-column align-items-start">
             <Dropdown>

@@ -1,10 +1,22 @@
-import { Col, Row, Button, Table, Container } from "react-bootstrap";
+import {
+  Col,
+  Row,
+  Button,
+  Table,
+  Container,
+  Alert,
+  Modal,
+  Form,
+  FormLabel,
+} from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCartAction, removeFromCartAction } from "../redux/actions";
 import ReturnButton from "./ReturnButton";
 import CustomNavBar from "./CustomNavBar";
 import DeveloperMenu from "./DeveloperMenu";
+import { useState } from "react";
+import Payment from "./Payment";
 
 // qui dentro uso useSelector per recuperare di nuovo l'array di itmem
 const Cart = ({ setUpdateNotification, updateNotification }) => {
@@ -34,15 +46,23 @@ const Cart = ({ setUpdateNotification, updateNotification }) => {
     return cartItem;
   }, []);
 
+  const [showModal, setShowModal] = useState(false);
+
+  const handleModal = () => {
+    setShowModal(true);
+  };
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
   return (
     <>
       <CustomNavBar />
+      <ReturnButton />
       <Container fluid style={{ minHeight: "100vh" }}>
         <DeveloperMenu
           setUpdateNotification={setUpdateNotification}
           updateNotification={updateNotification}
         />
-        <ReturnButton />
         <h1 className="mt-1 text-center">CARRELLO</h1>
         {cart.length > 0 ? (
           <Row className="mt-4 mx-auto">
@@ -112,8 +132,8 @@ const Cart = ({ setUpdateNotification, updateNotification }) => {
                 </Table>
               </div>
             </Col>
-            <Row>
-              <Col sm={12} className="fw-bold mb-3 ms-4">
+            <Row className="d-flex">
+              <Col sm={2} className="fw-bold mb-3 ms-4">
                 TOTALE:{" "}
                 {cart.reduce(
                   (acc, currentValue) => acc + parseFloat(currentValue.prezzo),
@@ -121,6 +141,11 @@ const Cart = ({ setUpdateNotification, updateNotification }) => {
                 )}
                 €
               </Col>
+              <Col>
+                <Button onClick={handleModal}>Acquista</Button>
+              </Col>
+
+              {showModal && <Payment handleCloseModal={handleCloseModal} />}
             </Row>
           </Row>
         ) : (

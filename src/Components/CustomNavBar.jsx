@@ -73,25 +73,30 @@ const CustomNavBar = () => {
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-2 d-flex align-items-center">
               {isMobile ? (
-                <Link
-                  to={"/profile"}
-                  className="fs-5 mb-5 Link-Navbar-OffCanvas me-3"
-                >
-                  Profile{" "}
-                </Link>
+                <>
+                  <Link
+                    to={"/profile"}
+                    className="fs-5 mb-5 Link-Navbar-OffCanvas me-3"
+                  >
+                    Profile{" "}
+                  </Link>
+                  <Link
+                    to={"/cart"}
+                    className="fs-5 Link-Navbar-OffCanvas me-3"
+                  >
+                    Carrello
+                  </Link>
+                  <Link
+                    to={"/home"}
+                    className=" fs-5 Link-Navbar-OffCanvas me-3"
+                  >
+                    Home
+                  </Link>
+                </>
               ) : (
                 ""
               )}
 
-              <Link to={"/cart"} className="fs-5 Link-Navbar-OffCanvas me-3">
-                Carrello
-              </Link>
-              <Link to={"/home"} className=" fs-5 Link-Navbar-OffCanvas me-3">
-                Home
-              </Link>
-              <Link to={"/home"} className=" fs-5 Link-Navbar-OffCanvas me-3">
-                Contact us
-              </Link>
               {/* </Nav> */}
               <Form className="d-flex align-items-center ms-3">
                 <Form.Control
@@ -113,9 +118,7 @@ const CustomNavBar = () => {
                 <NavDropdown.Item as={Link} to="/profile">
                   Profilo
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action4">
-                  Impostazioni
-                </NavDropdown.Item>
+
                 <NavDropdown.Divider />
                 <NavDropdown.Item
                   onClick={() => {
