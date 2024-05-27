@@ -17,6 +17,7 @@ const storicoReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
       };
+
     default:
       return state;
   }

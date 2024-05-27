@@ -11,18 +11,24 @@ import {
 } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCartAction, removeFromCartAction } from "../redux/actions";
+import {
+  addToCartAction,
+  // createFatture,
+  removeFromCartAction,
+} from "../redux/actions";
 import ReturnButton from "./ReturnButton";
 import CustomNavBar from "./CustomNavBar";
 import DeveloperMenu from "./DeveloperMenu";
 import { useState } from "react";
 import Payment from "./Payment";
+import { method } from "lodash";
 
 // qui dentro uso useSelector per recuperare di nuovo l'array di itmem
 const Cart = ({ setUpdateNotification, updateNotification }) => {
   const cart = useSelector((state) => state.cart.content);
   const dispatch = useDispatch();
-  const item = useSelector((state) => state.items.available); //LISTA DI ITEM
+  const [showModal, setShowModal] = useState(false);
+
   const contatoreCart = (cartItem, targetItem) => {
     return cartItem.reduce(
       (count, currentItem) =>
@@ -32,28 +38,52 @@ const Cart = ({ setUpdateNotification, updateNotification }) => {
   };
 
   const uniqueItemCart = cart.reduce((cartItem, currentItem) => {
-    // Verifica se l'elemento corrente è già presente nell'array risultante
     const existingItemIndex = cartItem.findIndex(
       (item) => item.id === currentItem.id
     );
     if (existingItemIndex === -1) {
-      // Se non è presente, aggiungilo all'array con una proprietà "quantity" iniziale
       cartItem.push({ ...currentItem, quantity: 1 });
     } else {
-      // Se è presente, incrementa la quantità di quell'elemento nell'array risultante
       cartItem[existingItemIndex].quantity++;
     }
     return cartItem;
   }, []);
 
-  const [showModal, setShowModal] = useState(false);
-
   const handleModal = () => {
     setShowModal(true);
   };
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+  const handlePurchase = async () => {
+    try {
+      const userId = sessionStorage.getItem("userId");
+      const payload = {
+        userId: userId,
+        items: cart.map((item) => item.id),
+      };
+      const token = sessionStorage.getItem("token");
+      const response = await fetch(`http://localhost:3001/fatture/purchase`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        throw new Error("Errore durante la creazione della fattura");
+      }
+      const data = await response.json();
+      console.log("Fattura creata:", data);
+      handleCloseModal();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <CustomNavBar />
@@ -93,37 +123,19 @@ const Cart = ({ setUpdateNotification, updateNotification }) => {
                         <td>{item.prezzo}</td>
                         <td>
                           <Col className="d-flex align-items-center">
-                            <i
-                              className="bi bi-plus-circle iconeCart"
+                            <FaTrash
+                              className="iconeCart"
                               onClick={() => {
-                                // vorrei aggiungere un item al carrello
-                                console.log("AGGIUNGO ITEM");
-
-                                dispatch(addToCartAction(item));
+                                console.log("RIMUOVO ITEM");
+                                dispatch(removeFromCartAction(i));
                               }}
-                            ></i>
-
+                            />
                             <div
                               className="border text-center ms-3 me-3"
                               style={{ width: "40px" }}
                             >
                               {contatoreCart(cart, item)}
                             </div>
-                            <i
-                              className="bi bi-dash-circle iconeCart"
-                              onClick={() => {
-                                // vorrei aggiungere un item al carrello
-                                console.log("RIMUOVO ITEM");
-
-                                dispatch(
-                                  removeFromCartAction(
-                                    cart.findIndex(
-                                      (cartItem) => cartItem.id === item.id
-                                    )
-                                  )
-                                );
-                              }}
-                            ></i>
                           </Col>
                         </td>
                       </tr>
@@ -145,7 +157,12 @@ const Cart = ({ setUpdateNotification, updateNotification }) => {
                 <Button onClick={handleModal}>Acquista</Button>
               </Col>
 
-              {showModal && <Payment handleCloseModal={handleCloseModal} />}
+              {showModal && (
+                <Payment
+                  handleCloseModal={handleCloseModal}
+                  handlePurchase={handlePurchase}
+                />
+              )}
             </Row>
           </Row>
         ) : (

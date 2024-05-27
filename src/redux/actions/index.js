@@ -8,6 +8,10 @@ export const CREATE_ITEM = "CREATE_ITEM";
 
 export const SAVE_STORICO = "SAVE_STORICO";
 
+export const CREATE_INVOICE_SUCCESS = "CREATE_INVOICE_SUCCESS";
+export const CREATE_INVOICE_FAILURE = "CREATE_INVOICE_FAILURE";
+export const CREATE_FATTURE = "CREATE_FATTURE";
+
 ///FETCHING CATEGORIES
 
 export const fetchCategories = () => {
@@ -155,3 +159,55 @@ export const getAllStorico = (userId) => {
     }
   };
 };
+
+export const createInvoiceSuccess = (invoice) => ({
+  type: CREATE_INVOICE_SUCCESS,
+  payload: invoice,
+});
+
+export const createInvoiceFailure = (error) => ({
+  type: CREATE_INVOICE_FAILURE,
+  payload: error,
+});
+// export const createFatture = (body) => {
+//   return async (dispatch, getState) => {
+//     try {
+//       const token = sessionStorage.getItem("token");
+
+//       const response = await fetch(`http://localhost:3001/fatture/purchase`, {
+//         method: "POST",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           "Content-type": "application/json",
+//         },
+//         body: JSON.stringify(body),
+//       });
+
+//       if (response.ok) {
+//         const data = await response.json();
+//         console.log("FATTURA ", data);
+//         dispatch({
+//           type: CREATE_FATTURE,
+//           payload: data,
+//         });
+//         dispatch({
+//           type: "RESET_CART",
+//         });
+//         dispatch({
+//           type: "SET_NOTIFICATION",
+//           payload: "Fattura creata con successo!",
+//         });
+//       } else {
+//         throw new Error("errore durante la creazione della fattura");
+//       }
+//     } catch (error) {
+//       console.error(error);
+//       dispatch(createInvoiceFailure(error.message));
+//       // Notifica di errore
+//       dispatch({
+//         type: "SET_NOTIFICATION",
+//         payload: "Errore durante la creazione della fattura.",
+//       });
+//     }
+//   };
+// };
