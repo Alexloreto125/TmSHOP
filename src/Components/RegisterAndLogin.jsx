@@ -126,6 +126,8 @@ const RegisterAndLogin = () => {
           return response.json().then((data) => {
             setLogin(initialLoginState);
             console.log("Access Token: ", data.accessToken);
+            console.log(data.userId);
+            sessionStorage.setItem("userId", data.userId);
             sessionStorage.setItem("token", data.accessToken);
             navigate("/home"); //!
 

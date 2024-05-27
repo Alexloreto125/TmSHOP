@@ -6,6 +6,8 @@ export const AGGIUNGI_CARRELLO = "AGGIUNGI_CARRELLO";
 export const DELETE_FROM_CART = "DELETE_FROM_CART";
 export const CREATE_ITEM = "CREATE_ITEM";
 
+export const SAVE_STORICO = "SAVE_STORICO";
+
 ///FETCHING CATEGORIES
 
 export const fetchCategories = () => {
@@ -119,33 +121,37 @@ export const resetCartAction = () => {
   };
 };
 
-// export const handleItemFormSubmit = (item) => {
-//   return async (dispatch, getState) => {
-//     try {
-//       const token = sessionStorage.getItem("token");
-//       let response = await fetch("http://localhost:3001/item/add", {
-//         method: "POST",
-//         body: JSON.stringify(item),
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           "Content-Type": "application/json",
-//         },
-//       });
+export const getAllStorico = (userId) => {
+  return async (dispatch, getState) => {
+    try {
+      const token = sessionStorage.getItem("token");
+      const response = await fetch(`http://localhost:3001/fatture/${userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const fetchStorico = await response.json();
+        console.log(fetchStorico);
+        /// ORA AGGIUNGIAMO Storico AL REDUCERS
+        dispatch({
+          type: SAVE_STORICO,
+          payload: fetchStorico,
+        });
 
-//       if (response.ok) {
-//         let data = response.json().dispatch({
-//           type: CREATE_ITEM,
-//           payload: data,
-//         });
-//       } else {
-//         let errorData = await response.json();
-//         let errorMessage = errorData.message || "Errore sconosciuto";
-//         alert(errorMessage); // Mostra l'alert con il messaggio di errore
-//         console.log("Errore:", errorMessage);
-//         console.log("ERrore andato storto");
-//       }
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// };
+        dispatch({
+          type: TURN_OF_SPINNER,
+        });
+      } else {
+        console.log("error");
+        dispatch({
+          type: TURN_OF_SPINNER,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
