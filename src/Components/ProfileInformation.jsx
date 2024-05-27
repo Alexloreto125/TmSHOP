@@ -16,6 +16,7 @@ import {
   fetchMeProfile,
   updateProfileFetch,
 } from "../redux/actions/userAction";
+import CustomNavBar from "./CustomNavBar";
 
 const ProfileInformation = () => {
   const dispatch = useDispatch();
@@ -85,7 +86,8 @@ const ProfileInformation = () => {
 
   return (
     <>
-      <Container fluid>
+      <CustomNavBar />
+      <Container style={{ minHeight: "100vh" }}>
         <Row>
           <Col xs={0} lg={2}></Col>
           <Col xs={12} lg={9} className="py-3">

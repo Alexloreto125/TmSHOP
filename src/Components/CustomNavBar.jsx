@@ -7,10 +7,11 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import "../assets/NavBarCss.css";
 import { CgProfile } from "react-icons/cg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
+import logo from "/assets/logo.png";
 
 const CustomNavBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -26,6 +27,11 @@ const CustomNavBar = () => {
 
   const navigate = useNavigate();
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const [imgSrc, setImgSrc] = useState(logo);
+
+  useEffect(() => {
+    setImgSrc(logo); // Forza il ricaricamento dell'immagine
+  }, []);
 
   return (
     <Navbar expand="md" data-bs-theme="info" className="backgroundTm ">
@@ -37,7 +43,8 @@ const CustomNavBar = () => {
         >
           <Link to={"/home"} className="Link-Navbar">
             <img
-              src="public\assets\logo.png"
+              // src="public\assets\logo.png"
+              src={imgSrc}
               alt="logo-TM RACING"
               className="logo rounded"
             />
@@ -55,7 +62,8 @@ const CustomNavBar = () => {
           <Offcanvas.Header closeButton>
             <Offcanvas.Title id="offcanvasNavbarLabel">
               <img
-                src="public\assets\logo.png"
+                // src="public\assets\logo.png"
+                src={imgSrc}
                 alt="logo-TM RACING"
                 className="logo-dropdown rounded"
               />{" "}
@@ -75,6 +83,9 @@ const CustomNavBar = () => {
                 ""
               )}
 
+              <Link to={"/cart"} className="fs-5 Link-Navbar-OffCanvas me-3">
+                Carrello
+              </Link>
               <Link to={"/home"} className=" fs-5 Link-Navbar-OffCanvas me-3">
                 Home
               </Link>

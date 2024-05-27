@@ -3,9 +3,11 @@ import { FaTrash } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCartAction, removeFromCartAction } from "../redux/actions";
 import ReturnButton from "./ReturnButton";
+import CustomNavBar from "./CustomNavBar";
+import DeveloperMenu from "./DeveloperMenu";
 
-const Cart = () => {
-  // qui dentro uso useSelector per recuperare di nuovo l'array di itmem
+// qui dentro uso useSelector per recuperare di nuovo l'array di itmem
+const Cart = ({ setUpdateNotification, updateNotification }) => {
   const cart = useSelector((state) => state.cart.content);
   const dispatch = useDispatch();
   const item = useSelector((state) => state.items.available); //LISTA DI ITEM
@@ -33,90 +35,99 @@ const Cart = () => {
   }, []);
 
   return (
-    <Container fluid>
-      <ReturnButton />
-      <h1 className="mt-1 text-center">CARRELLO</h1>
-      {cart.length > 0 ? (
-        <Row className="mt-4 mx-auto">
-          <Col className="p-0">
-            <Table>
-              <thead>
-                <tr>
-                  <th>Immagine</th>
-                  <th>Descrizione Prodotto</th>
-                  <th>Prezzo</th>
-                  <th>Quantità</th>
-                </tr>
-              </thead>
+    <>
+      <CustomNavBar />
+      <Container fluid style={{ minHeight: "100vh" }}>
+        <DeveloperMenu
+          setUpdateNotification={setUpdateNotification}
+          updateNotification={updateNotification}
+        />
+        <ReturnButton />
+        <h1 className="mt-1 text-center">CARRELLO</h1>
+        {cart.length > 0 ? (
+          <Row className="mt-4 mx-auto">
+            <Col className="p-0" sm={12}>
+              <div className="table-responsive">
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Immagine</th>
+                      <th>Descrizione Prodotto</th>
+                      <th>Prezzo</th>
+                      <th>Quantità</th>
+                    </tr>
+                  </thead>
 
-              {uniqueItemCart.map((item, i) => (
-                <tbody key={i}>
-                  <tr className="text-dark">
-                    <td>
-                      <img
-                        className="item-cover-small"
-                        src={item.image}
-                        alt="item selected"
-                        style={{ width: "60px" }}
-                      />
-                    </td>
-                    <td>{item.name}</td>
-                    <td>{item.prezzo}</td>
-                    <td>
-                      <Col className="d-flex align-items-center">
-                        <i
-                          className="bi bi-plus-circle iconeCart"
-                          onClick={() => {
-                            // vorrei aggiungere un item al carrello
-                            console.log("AGGIUNGO ITEM");
+                  {uniqueItemCart.map((item, i) => (
+                    <tbody key={i}>
+                      <tr className="text-dark">
+                        <td>
+                          <img
+                            className="item-cover-small"
+                            src={item.image}
+                            alt="item selected"
+                            style={{ width: "60px" }}
+                          />
+                        </td>
+                        <td>{item.name}</td>
+                        <td>{item.prezzo}</td>
+                        <td>
+                          <Col className="d-flex align-items-center">
+                            <i
+                              className="bi bi-plus-circle iconeCart"
+                              onClick={() => {
+                                // vorrei aggiungere un item al carrello
+                                console.log("AGGIUNGO ITEM");
 
-                            dispatch(addToCartAction(item));
-                          }}
-                        ></i>
+                                dispatch(addToCartAction(item));
+                              }}
+                            ></i>
 
-                        <div
-                          className="border text-center ms-3 me-3"
-                          style={{ width: "40px" }}
-                        >
-                          {contatoreCart(cart, item)}
-                        </div>
-                        <i
-                          className="bi bi-dash-circle iconeCart"
-                          onClick={() => {
-                            // vorrei aggiungere un item al carrello
-                            console.log("RIMUOVO ITEM");
+                            <div
+                              className="border text-center ms-3 me-3"
+                              style={{ width: "40px" }}
+                            >
+                              {contatoreCart(cart, item)}
+                            </div>
+                            <i
+                              className="bi bi-dash-circle iconeCart"
+                              onClick={() => {
+                                // vorrei aggiungere un item al carrello
+                                console.log("RIMUOVO ITEM");
 
-                            dispatch(
-                              removeFromCartAction(
-                                cart.findIndex(
-                                  (cartItem) => cartItem.id === item.id
-                                )
-                              )
-                            );
-                          }}
-                        ></i>
-                      </Col>
-                    </td>
-                  </tr>
-                </tbody>
-              ))}
-            </Table>
-          </Col>
-          <Row>
-            <Col sm={12} className="fw-bold mb-3 ms-4">
-              TOTALE:{" "}
-              {cart.reduce(
-                (acc, currentValue) => acc + parseFloat(currentValue.prezzo),
-                0
-              )}
-              €
+                                dispatch(
+                                  removeFromCartAction(
+                                    cart.findIndex(
+                                      (cartItem) => cartItem.id === item.id
+                                    )
+                                  )
+                                );
+                              }}
+                            ></i>
+                          </Col>
+                        </td>
+                      </tr>
+                    </tbody>
+                  ))}
+                </Table>
+              </div>
             </Col>
+            <Row>
+              <Col sm={12} className="fw-bold mb-3 ms-4">
+                TOTALE:{" "}
+                {cart.reduce(
+                  (acc, currentValue) => acc + parseFloat(currentValue.prezzo),
+                  0
+                )}
+                €
+              </Col>
+            </Row>
           </Row>
-        </Row>
-      ) : (
-        <h2>Nessun elemento nel carrello...</h2>
-      )}
-    </Container>
+        ) : (
+          <h2>Nessun elemento nel carrello...</h2>
+        )}
+      </Container>
+    </>
   );
 };
 

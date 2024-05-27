@@ -288,6 +288,11 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
           console.log(data.itemRicambio.id);
           setError({ item: null });
           console.log(" PRIMA DELL'IF ", selectedFile);
+          setItem(initialItem);
+          console.log("Item creato senza immagine", data);
+          closeForm();
+          setUpdateNotification((prev) => !prev);
+
           if (selectedFile) {
             console.log(" DOPO L'IF ", selectedFile);
             const formData = new FormData();
@@ -315,7 +320,10 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
               dispatch(fetchCategories());
               setError({ item: null });
             } else {
+              setItem(initialItem);
+              console.log("Item creato senza immagine", data);
               closeForm();
+              setUpdateNotification((prev) => !prev);
               const errorData = await imageResponse.json();
               console.log(errorData.message);
               setError({ item: errorData.message });
@@ -324,7 +332,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
         } else {
           const errorData = await response.json();
           console.log(errorData.message);
-
+          closeForm();
           setUpdateNotification(!updateNotification);
           setError({ item: errorData.message });
         }
@@ -752,7 +760,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
                   />
                   <Col className="d-flex ">
                     <Button variant="primary" type="submit" className="me-2">
-                      MODIFICA
+                      INVIA
                     </Button>
                     {error.item ? (
                       <Alert variant="danger"> {error.item} </Alert>

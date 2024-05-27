@@ -2,6 +2,8 @@
   width: 200px;
   height: 100%; /* Assicurati che le card abbiano altezza completa */
   cursor: pointer;
+  padding-left: 0;
+  padding-right: 1;
 }
 
 .hovered {

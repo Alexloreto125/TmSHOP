@@ -15,6 +15,7 @@ import ProfileInformation from "./Components/ProfileInformation";
 import ItemsGriglia from "./Components/ItemsGriglia";
 import ItemInfo from "./Components/ItemInfo";
 import Cart from "./Components/Cart";
+import Footer from "./Components/Footer";
 
 function App() {
   const [categories, setCategories] = useState([]);
@@ -23,35 +24,64 @@ function App() {
   const token = sessionStorage.getItem("token");
   return (
     <>
-      <CustomNavBar />
-      <DeveloperMenu
-        setUpdateNotification={setUpdateNotification}
-        updateNotification={updateNotification}
-      />
       <Routes>
         <Route path="/" element={<RegisterAndLogin />} />
         <Route
           path="/home"
           element={
-            <Container className="background-image" fluid>
-              <Categoria />
-              <Row>
-                {isLoading && <Spinner animation="border" variant="warning" />}
+            <>
+              <CustomNavBar />
+              <Container className="background-image" fluid>
+                <DeveloperMenu
+                  setUpdateNotification={setUpdateNotification}
+                  updateNotification={updateNotification}
+                />
+                <Categoria
+                  setUpdateNotification={setUpdateNotification}
+                  updateNotification={updateNotification}
+                />
+                <Row>
+                  {isLoading && (
+                    <Spinner animation="border" variant="warning" />
+                  )}
 
-                <GrigliaCategory updateNotification={updateNotification} />
-              </Row>
-            </Container>
+                  <GrigliaCategory updateNotification={updateNotification} />
+                </Row>
+              </Container>
+            </>
           }
         />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/me" element={<ProfileInformation />} />
         <Route
           path="/categoria/:categoriaId"
-          element={<ItemsGriglia updateNotification={updateNotification} />}
+          element={
+            <ItemsGriglia
+              updateNotification={updateNotification}
+              setUpdateNotification={setUpdateNotification}
+            />
+          }
         />
-        <Route path="/item/:itemId" element={<ItemInfo />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route
+          path="/item/:itemId"
+          element={
+            <ItemInfo
+              updateNotification={updateNotification}
+              setUpdateNotification={setUpdateNotification}
+            />
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <Cart
+              updateNotification={updateNotification}
+              setUpdateNotification={setUpdateNotification}
+            />
+          }
+        />
       </Routes>
+      <Footer />
     </>
   );
 }

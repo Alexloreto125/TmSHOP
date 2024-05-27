@@ -6,13 +6,15 @@ import "../assets/Profile.css";
 
 import { CiLogout } from "react-icons/ci";
 import ReturnButton from "./ReturnButton";
+import CustomNavBar from "./CustomNavBar";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
 
   return (
     <>
-      <Container>
+      <CustomNavBar />
+      <Container style={{ minHeight: "100vh" }}>
         <ReturnButton />
         <Row className="d-flex flex-column">
           <h1 className="border-bottom mb-5 text-center">
