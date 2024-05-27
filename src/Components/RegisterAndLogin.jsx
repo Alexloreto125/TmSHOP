@@ -22,6 +22,14 @@ const RegisterAndLogin = () => {
   const [error, setError] = useState(null);
   const [errorLogin, setErrorLogin] = useState(null);
   const navigate = useNavigate(); //!
+  const showRegSuccessAlert = () => {
+    setRegSuccess(true);
+
+    // Nascondi l'alert dopo 5 secondi
+    setTimeout(() => {
+      setRegSuccess(false);
+    }, 5000); // 5000 millisecondi = 5 secondi
+  };
 
   const initialRegistrationState = {
     name: "",
@@ -34,6 +42,7 @@ const RegisterAndLogin = () => {
     password: "",
   };
   const [registration, setRegistration] = useState(initialRegistrationState);
+  const [regSuccess, setRegSuccess] = useState(false);
 
   const [login, setLogin] = useState(initialLoginState);
 
@@ -82,6 +91,7 @@ const RegisterAndLogin = () => {
           return response.json().then((data) => {
             setRegistration(initialRegistrationState);
 
+            showRegSuccessAlert();
             return data;
           });
         } else if (response.status === 400) {
@@ -152,6 +162,15 @@ const RegisterAndLogin = () => {
         <Container>
           <Row className=" full-height justify-content-center">
             <Col className="col-12 text-center align-self-center py-5">
+              {regSuccess && (
+                <Alert
+                  variant="success"
+                  className={regSuccess ? "fade-out-error" : ""}
+                  style={{ width: "440px" }}
+                >
+                  Registrazione effuttata con successo
+                </Alert>
+              )}
               <section className="section pb-5 pt-5 pt-sm-2 text-center">
                 <h6
                   className="mb-0 p-2 rounded mx-auto"
