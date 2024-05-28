@@ -10,7 +10,7 @@ const Ricerca = () => {
   const location = useLocation();
   const { results } = location.state || { results: [] };
 
-  const [noResults, setNoResults] = useState(false);
+  const [noResults, setNoResults] = useState(results.length === 0);
   const navigate = useNavigate();
 
   return (
