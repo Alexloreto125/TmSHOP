@@ -3,11 +3,11 @@ import CustomNavBar from "./CustomNavBar";
 import ReturnButton from "./ReturnButton";
 import DeveloperMenu from "./DeveloperMenu";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAllStorico } from "../redux/actions";
-
+import "../assets/Storico.css";
 const Storico = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,10 +41,15 @@ const Storico = () => {
                   className="border-bottom mb-5 d-flex align-items-center"
                   key={index}
                 >
-                  <span className=" fs-4 fw-bold ">
-                    {" "}
-                    Ordine n# {ordine.numero}
-                  </span>
+                  <Link
+                    to={`/ordine/${ordine.numero}`}
+                    className="Link-Storico"
+                  >
+                    <span className=" fs-4 fw-bold">
+                      {" "}
+                      Ordine n# {ordine.numero}
+                    </span>
+                  </Link>
                 </Col>
               ))
             : " Nessun ordine disponibile"}

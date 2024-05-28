@@ -1,7 +1,6 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CustomNavBar from "./Components/CustomNavBar";
-// import GrigliaItem from "./Components/GrigliaItem";
 import Categoria from "./Components/Categoria";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
 import RegisterAndLogin from "./Components/RegisterAndLogin";
@@ -17,6 +16,7 @@ import ItemInfo from "./Components/ItemInfo";
 import Cart from "./Components/Cart";
 import Footer from "./Components/Footer";
 import Storico from "./Components/Storico";
+import StoricoInfo from "./Components/StoricoInfo";
 
 function App() {
   const [categories, setCategories] = useState([]);
@@ -82,6 +82,7 @@ function App() {
           }
         />
         <Route path="/storico" element={<Storico />} />
+        <Route path="/ordine/:storicoId" element={<StoricoInfo />} />
       </Routes>
       <Footer />
     </>
