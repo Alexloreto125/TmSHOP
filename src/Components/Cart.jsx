@@ -15,13 +15,13 @@ import {
   addToCartAction,
   // createFatture,
   removeFromCartAction,
+  resetCartAction,
 } from "../redux/actions";
 import ReturnButton from "./ReturnButton";
 import CustomNavBar from "./CustomNavBar";
 import DeveloperMenu from "./DeveloperMenu";
 import { useState } from "react";
 import Payment from "./Payment";
-import { method } from "lodash";
 
 // qui dentro uso useSelector per recuperare di nuovo l'array di itmem
 const Cart = ({ setUpdateNotification, updateNotification }) => {
@@ -82,6 +82,7 @@ const Cart = ({ setUpdateNotification, updateNotification }) => {
       const data = await response.json();
       console.log("Fattura creata:", data);
       handleCloseModal();
+      dispatch(resetCartAction());
     } catch (error) {
       console.error(error);
     }
@@ -126,19 +127,37 @@ const Cart = ({ setUpdateNotification, updateNotification }) => {
                         <td>{item.prezzo}</td>
                         <td>
                           <Col className="d-flex align-items-center">
-                            <FaTrash
-                              className="iconeCart"
+                            <i
+                              className="bi bi-plus-circle iconeCart"
                               onClick={() => {
-                                console.log("RIMUOVO ITEM");
-                                dispatch(removeFromCartAction(i));
+                                // vorrei aggiungere un item al carrello
+                                console.log("AGGIUNGO ITEM");
+
+                                dispatch(addToCartAction(item));
                               }}
-                            />
+                            ></i>
+
                             <div
                               className="border text-center ms-3 me-3"
                               style={{ width: "40px" }}
                             >
                               {contatoreCart(cart, item)}
                             </div>
+                            <i
+                              className="bi bi-dash-circle iconeCart"
+                              onClick={() => {
+                                // vorrei aggiungere un item al carrello
+                                console.log("RIMUOVO ITEM");
+
+                                dispatch(
+                                  removeFromCartAction(
+                                    cart.findIndex(
+                                      (cartItem) => cartItem.id === item.id
+                                    )
+                                  )
+                                );
+                              }}
+                            ></i>
                           </Col>
                         </td>
                       </tr>
