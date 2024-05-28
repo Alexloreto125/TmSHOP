@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-
-const BodyStorico = () => {
+const BodyStorico = ({ downloadPDF, loader, setLoader }) => {
   // const storico = useSelector((state) => state.storico.storico);
   const { storicoId } = useParams();
   console.log(storicoId);
   const [ordine, setOrdine] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -56,6 +57,7 @@ const BodyStorico = () => {
   };
 
   console.log(ordine.items);
+
   return (
     <body className="text-dark bg-light">
       {ordine ? (
@@ -172,14 +174,23 @@ const BodyStorico = () => {
             </table>
           </article>
 
-          <aside className="bg-light">
+          <aside className="bg-light ">
             <h1 id="notes">Additional Notes</h1>
-            <div>
+            <div className="d-flex ">
               <p className="m-0 pb-2">
                 A finance charge of 1.5% will be made on unpaid balances after
                 30 days.
               </p>
             </div>
+            <Button
+              className="mx-auto download-button"
+              onClick={() => {
+                downloadPDF(ordine.numero);
+              }}
+              disabled={!(loader === false)}
+            >
+              {loader ? "Downloading..." : "Download"}
+            </Button>
           </aside>
         </>
       ) : (
