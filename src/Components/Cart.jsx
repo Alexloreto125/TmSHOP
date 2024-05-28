@@ -28,6 +28,7 @@ const Cart = ({ setUpdateNotification, updateNotification }) => {
   const cart = useSelector((state) => state.cart.content);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const contatoreCart = (cartItem, targetItem) => {
     return cartItem.reduce(
@@ -81,6 +82,8 @@ const Cart = ({ setUpdateNotification, updateNotification }) => {
       }
       const data = await response.json();
       console.log("Fattura creata:", data);
+      setShowSuccessAlert(true);
+      setTimeout(() => setShowSuccessAlert(false), 3000);
       handleCloseModal();
       dispatch(resetCartAction());
     } catch (error) {
@@ -98,6 +101,11 @@ const Cart = ({ setUpdateNotification, updateNotification }) => {
           updateNotification={updateNotification}
         />
         <h1 className="mt-1 text-center">CARRELLO</h1>
+        {showSuccessAlert && (
+          <Alert variant="success" className="text-center">
+            Pagamento effettuato con successo!
+          </Alert>
+        )}
         {cart.length > 0 ? (
           <Row className="mt-4 mx-auto">
             <Col className="p-0" sm={12}>

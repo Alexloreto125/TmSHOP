@@ -17,6 +17,7 @@ import Cart from "./Components/Cart";
 import Footer from "./Components/Footer";
 import Storico from "./Components/Storico";
 import StoricoInfo from "./Components/StoricoInfo";
+import Ricerca from "./Components/Ricerca";
 
 function App() {
   const [categories, setCategories] = useState([]);
@@ -83,6 +84,7 @@ function App() {
         />
         <Route path="/storico" element={<Storico />} />
         <Route path="/ordine/:storicoId" element={<StoricoInfo />} />
+        <Route path="/results" element={<Ricerca />} />
       </Routes>
       <Footer />
     </>

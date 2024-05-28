@@ -16,6 +16,12 @@ import logo from "/assets/logo.png";
 const CustomNavBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const cart = useSelector((state) => state.cart.content);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const [imgSrc, setImgSrc] = useState(logo);
 
   const handleDropdownOpen = () => {
     setIsDropdownOpen(true);
@@ -24,14 +30,37 @@ const CustomNavBar = () => {
   const handleDropdownClose = () => {
     setIsDropdownOpen(false);
   };
-
-  const navigate = useNavigate();
-  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
-  const [imgSrc, setImgSrc] = useState(logo);
-
   useEffect(() => {
     setImgSrc(logo); // Forza il ricaricamento dell'immagine
   }, []);
+
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    try {
+      const token = sessionStorage.getItem("token");
+      const response = await fetch(
+        `http://localhost:3001/item/search?q=${searchQuery}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setSearchResults(data);
+        // Navigate to a search results page or display results in a dropdown
+        navigate("/results", { state: { results: data } });
+        console.log("Risultati della ricerca:", data);
+      } else {
+        navigate("/results");
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   return (
     <Navbar expand="md" data-bs-theme="info" className="backgroundTm ">
@@ -98,14 +127,23 @@ const CustomNavBar = () => {
               )}
 
               {/* </Nav> */}
-              <Form className="d-flex align-items-center ms-3">
+              <Form
+                className="d-flex align-items-center ms-3"
+                onSubmit={handleSearch}
+              >
                 <Form.Control
                   type="search"
                   placeholder="Search"
                   className="ms-3"
                   aria-label="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <Button className="ms-3" variant="outline-success">
+                <Button
+                  className="ms-3"
+                  variant="outline-success"
+                  type="submit"
+                >
                   Search
                 </Button>
               </Form>
