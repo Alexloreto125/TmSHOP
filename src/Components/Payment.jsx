@@ -25,12 +25,10 @@ const Payment = ({ handleCloseModal, handlePurchase }) => {
     const { value } = e.target;
     let formattedValue = value;
 
-    // Inserisce '/' dopo le prime 2 cifre
     if (value.length === 2 && !value.includes("/")) {
       formattedValue = `${value}/`;
     }
 
-    // Limita la lunghezza a 7 caratteri (MM/YYYY)
     if (formattedValue.length <= 7) {
       setFormData({
         ...formData,

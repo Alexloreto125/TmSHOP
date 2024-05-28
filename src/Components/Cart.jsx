@@ -62,7 +62,10 @@ const Cart = ({ setUpdateNotification, updateNotification }) => {
       const userId = sessionStorage.getItem("userId");
       const payload = {
         userId: userId,
-        items: cart.map((item) => item.id),
+        items: uniqueItemCart.map((item) => ({
+          id: item.id,
+          quantity: item.quantity,
+        })),
       };
       const token = sessionStorage.getItem("token");
       const response = await fetch(`http://localhost:3001/fatture/purchase`, {
