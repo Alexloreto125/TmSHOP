@@ -4,32 +4,32 @@ import CustomNavBar from "./CustomNavBar";
 import ReturnButton from "./ReturnButton";
 import HeaderStorico from "./HeaderStorico";
 import BodyStorico from "./BodyStorico";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
 const StoricoInfo = () => {
   const { storicoId } = useParams();
   const [loader, setLoader] = useState(false);
+  const captureRef = useRef(null);
   const downloadPDF = (fatturaId) => {
-    const capture = document.querySelector(".StoricoForm");
+    const capture = captureRef.current;
+    const captureWidth = capture.offsetWidth;
+    const captureHeight = capture.offsetHeight;
+
     const downloadButton = capture.querySelector(".download-button");
     if (downloadButton) {
       downloadButton.style.display = "none"; // Nascondi temporaneamente il pulsante
     }
     setLoader(true);
 
-    html2canvas(capture).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png"); // Fix: "img/png" to "image/png"
-      console.log("Image data:", imgData); // Log image data
-      const doc = new jsPDF("p", "mm", "a4");
+    html2canvas(capture, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", [captureWidth, captureHeight]);
 
-      console.log("PDF object:", doc); // Log PDF object
-      const componentWidth = doc.internal.pageSize.getWidth();
-      const componentHeight = doc.internal.pageSize.getHeight();
-      doc.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);
+      pdf.addImage(imgData, "PNG", 0, 0, captureWidth, captureHeight);
+      pdf.save(`FATTURA ${fatturaId}`);
       setLoader(false);
-      doc.save(`FATTURA ${fatturaId}`);
       if (downloadButton) {
         downloadButton.style.display = "inline-block";
       }
@@ -40,7 +40,7 @@ const StoricoInfo = () => {
       <CustomNavBar />
       <ReturnButton />
 
-      <Form className="StoricoForm ">
+      <Form ref={captureRef} className="StoricoForm ">
         <HeaderStorico />
         <BodyStorico
           downloadPDF={downloadPDF}

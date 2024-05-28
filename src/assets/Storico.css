@@ -28,7 +28,7 @@ header {
   margin: 0 0 3em;
 }
 
-h1 {
+.invoices {
   font: bold 100% sans-serif;
   letter-spacing: 0.5em;
   text-align: center;

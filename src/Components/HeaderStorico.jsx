@@ -3,7 +3,7 @@ import logo from "/assets/logo.png";
 const HeaderStorico = () => {
   return (
     <header className="text-dark">
-      <h1> INVOICE </h1>
+      <h1 className="text-center invoices"> INVOICE </h1>
       <address>
         <p> ALEX TM SHOP </p>
         <p> #429, First Floor </p>
