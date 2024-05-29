@@ -91,12 +91,12 @@ const ItemsGriglia = ({ updateNotification, setUpdateNotification }) => {
                     >
                       {item.name}
                     </Card.Title>
-                    <Card.Text
+                    {/* <Card.Text
                       className="text-truncate"
                       style={{ maxWidth: "100%" }}
                     >
                       {item.description}
-                    </Card.Text>
+                    </Card.Text> */}
                     <Card.Text className="fs-5 fw-bold">
                       {item.prezzo} €
                     </Card.Text>

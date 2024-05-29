@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import "../assets/BodyStorico.css";
 const BodyStorico = ({ downloadPDF, loader, setLoader }) => {
   // const storico = useSelector((state) => state.storico.storico);
   const { storicoId } = useParams();

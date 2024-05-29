@@ -118,7 +118,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
       prezzo: selectedItem.prezzo,
       categoryID: selectedItem.categoryID,
       codice: selectedItem.codice,
-      descrizione: selectedItem.description,
+      descrizione: selectedItem.descrizione,
       image: "",
     });
     setItemIdToEdit(selectedItem.id);
@@ -420,7 +420,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data.id);
+        console.log(data);
         setError({ editItem: null });
         if (selectedFileEdit) {
           const formData = new FormData();

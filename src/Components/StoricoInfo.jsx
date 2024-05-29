@@ -40,7 +40,11 @@ const StoricoInfo = () => {
       <CustomNavBar />
       <ReturnButton />
 
-      <Form ref={captureRef} className="StoricoForm ">
+      <Form
+        ref={captureRef}
+        className="StoricoForm "
+        style={{ overflow: "auto" }}
+      >
         <HeaderStorico />
         <BodyStorico
           downloadPDF={downloadPDF}
