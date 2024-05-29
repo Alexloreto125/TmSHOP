@@ -85,6 +85,9 @@ const ProfileInformation = () => {
     dispatch(fetchMeProfile());
   }, []);
 
+  const mascheraPassword = (password) => {
+    return password.replace(/./g, "•");
+  };
   return (
     <>
       <CustomNavBar />
@@ -157,7 +160,9 @@ const ProfileInformation = () => {
                   <Row className="align-items-center mb-3">
                     <Col xs={12} md={6} className="text-center text-md-start">
                       {user.password ? (
-                        <span style={{ color: "black" }}>{user.password}</span>
+                        <span style={{ color: "black" }}>
+                          {mascheraPassword(user.password)}
+                        </span>
                       ) : (
                         <span style={{ color: "red" }}>
                           Email not available
