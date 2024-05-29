@@ -152,7 +152,7 @@ const DeveloperMenu = ({ setUpdateNotification, updateNotification }) => {
         },
       });
       if (response.ok) {
-        console.log("Categoria eliminata");
+        console.log(" eliminata");
         // setUpdateNotification(!updateNotification);
         closeForm();
         dispatch(fetchCategories());

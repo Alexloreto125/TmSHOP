@@ -165,13 +165,15 @@ const RegisterAndLogin = () => {
           <Row className=" full-height justify-content-center">
             <Col className="col-12 text-center align-self-center py-5">
               {regSuccess && (
-                <Alert
-                  variant="success"
-                  className={regSuccess ? "fade-out-error" : ""}
-                  style={{ width: "440px" }}
-                >
-                  Registrazione effuttata con successo
-                </Alert>
+                <div className="d-flex justify-content-center">
+                  <Alert
+                    variant="success"
+                    className={regSuccess ? "fade-out-error text-center" : ""}
+                    style={{ width: "440px" }}
+                  >
+                    Registrazione effuttata con successo
+                  </Alert>
+                </div>
               )}
               <section className="section pb-5 pt-5 pt-sm-2 text-center">
                 <h6
@@ -306,6 +308,7 @@ const RegisterAndLogin = () => {
                               onChange={(e) => {
                                 handleRegistration(e, "phone");
                               }}
+                              maxLength={10}
                             />
                             <i className="input-icon uil uil-phone" />
                           </FormGroup>
